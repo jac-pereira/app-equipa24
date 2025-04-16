@@ -235,6 +235,36 @@ namespace Equipa24_Eventos_Delegados
             MostraMensagem("PDF criado com sucesso!");
 
         }
+
+        private void btnGravar_Click(object sender, EventArgs e)
+        {
+            int idAtual;
+
+            if (int.TryParse(txtID.Text, out idAtual))
+            {
+                Produto produto = visao.ObterProdutoPorId(idAtual);
+
+                if (produto != null)
+                {
+                    // Atualiza os valores do produto com os dados do formulário
+                    produto.CodProduto = txtProduto.Text;
+                    produto.Descricao = txtDescricao.Text;
+                    produto.TextoComplementar = txtTextoComplementar.Text;
+                    produto.Obs = txtObs.Text;
+                    produto.Foto = pictureBoxFoto.ImageLocation;
+
+                    MostraMensagem("Alterações guardadas com sucesso!");
+                }
+                else
+                {
+                    MostraMensagem("Produto não encontrado.");
+                }
+            }
+            else
+            {
+                MostraMensagem("ID inválido.");
+            }
+        }
     }
 
 

@@ -181,5 +181,20 @@ namespace Equipa24_Eventos_Delegados.View
                 MostrarProdutoAtual();
             }
         }
+
+        public Produto ObterProdutoPorId(int id)
+        {
+            if (listaProdutos != null)
+            {
+                foreach (Produto p in listaProdutos)
+                {
+                    if (p.Id == id)
+                        return p;
+                }
+            }
+
+            return null;
+        }
+
     }
 }
