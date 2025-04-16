@@ -68,7 +68,7 @@
             // 
             // txtMensagens
             // 
-            this.txtMensagens.Location = new System.Drawing.Point(12, 380);
+            this.txtMensagens.Location = new System.Drawing.Point(26, 373);
             this.txtMensagens.Multiline = true;
             this.txtMensagens.Name = "txtMensagens";
             this.txtMensagens.ScrollBars = System.Windows.Forms.ScrollBars.Both;
@@ -123,6 +123,8 @@
             this.btnProximo.TabIndex = 40;
             this.btnProximo.Text = "Próximo";
             this.btnProximo.UseVisualStyleBackColor = true;
+            this.btnProximo.Click += new System.EventHandler(this.btnProximo_Click);
+            this.btnProximo.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnProximo_MouseClick);
             // 
             // btnAnterior
             // 
@@ -133,6 +135,8 @@
             this.btnAnterior.TabIndex = 38;
             this.btnAnterior.Text = "Anterior";
             this.btnAnterior.UseVisualStyleBackColor = true;
+            this.btnAnterior.Click += new System.EventHandler(this.btnAnterior_Click);
+            this.btnAnterior.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnAnterior_MouseClick);
             // 
             // label1
             // 

@@ -25,6 +25,8 @@ namespace Equipa24_Eventos_Delegados
         [STAThread]
         static void Main()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             Controlador controlador = new Controlador();
             controlador.IniciarPrograma();
         }

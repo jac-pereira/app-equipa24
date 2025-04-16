@@ -19,6 +19,14 @@ namespace Equipa24_Eventos_Delegados.View
 
         private List<Produto> listaProdutos;
 
+        // Índice do produto atualmente selecionado na lista
+        private int indiceAtual = -1;
+
+        // Propriedades auxiliares
+        public int IndiceAtual { get => indiceAtual; set => indiceAtual = value; }
+        public int TotalProdutos => listaProdutos != null ? listaProdutos.Count : 0;
+
+        // Eventos que serão ligados no Controller
         public event System.EventHandler UtilizadorClicouImportar;
         public event System.EventHandler UtilizadorClicouEmSair;
 
@@ -30,6 +38,7 @@ namespace Equipa24_Eventos_Delegados.View
             modelo = m;
         }
 
+        // Ativa a interface gráfica e liga o formulário à instância desta classe Visao
         public void AtivarInterface()
         {
             janela = new Form1();
@@ -64,6 +73,9 @@ namespace Equipa24_Eventos_Delegados.View
             {
                 CarregarComboSeleciona(ref comboBox);
                 PesquisarUltimoProduto(ref produto);
+
+                janela.AtivarBotoesNavegacao();
+
             }
         }
 
@@ -99,9 +111,6 @@ namespace Equipa24_Eventos_Delegados.View
 
 
 
-
-
-
         public void AtualizarListaDeProdutos()
         {
             // Atualizar a lista de produtos recebidas do Model
@@ -109,38 +118,41 @@ namespace Equipa24_Eventos_Delegados.View
         }
 
 
-        // void DesenharFormas() ---> void MostrarProdutos()
-        void MostrarProdutos()
-        {
-            /* Criação de uma forma aleatória
-            List<Forma> lista = new List<Forma>();
-            PrecisoDeFormas(ref lista);
-            */
 
-            List<Produto> lista = new List<Produto>();
-            PrecisoDeProdutos(ref lista);
-            //Mostrar os Produtos aqui
-        }
 
+        // Obtém o último produto importado
         public void PesquisarUltimoProduto(ref Produto produto)
         {
-            foreach (Produto p in listaProdutos)
+            if (listaProdutos != null && listaProdutos.Count > 0)
             {
-                produto = p;
+                indiceAtual = listaProdutos.Count - 1;
+                produto = listaProdutos[indiceAtual];
             }
         }
 
+        // Recomeça a navegação pela lista do início
+        public void ResetarNavegacao()
+        {
+            indiceAtual = -1;
+        }
 
+        // Atualiza o formulário com o produto atualmente selecionado
+        public void MostrarProdutoAtual()
+        {
+            if (listaProdutos != null && indiceAtual >= 0 && indiceAtual < listaProdutos.Count)
+            {
+                Produto produto = listaProdutos[indiceAtual];
+                janela.MostrarProduto(ref produto);
+            }
+        }
 
+        // Pesquisa por um produto com determinado ID (chamado na ComboBox)
         public bool Procurar(int idAux, ref Produto produto)
         {
-
-            int valor = 0;
             bool encontrou = false;
             foreach (Produto p in listaProdutos)
             {
-                valor = (int)p.Id;
-                if (valor == idAux)
+                if ((int)p.Id == idAux)
                 {
                     produto = p;
                     encontrou = true;
@@ -149,6 +161,25 @@ namespace Equipa24_Eventos_Delegados.View
             }
             return encontrou;
         }
+
+        // Avança para o próximo produto da lista, se existir
+        public void AvancarProduto()
+        {
+            if (indiceAtual < listaProdutos.Count - 1)
+            {
+                indiceAtual++;
+                MostrarProdutoAtual();
+            }
+        }
+
+        // Recuar para o produto anterior na lista, se existir
+        public void RetrocederProduto()
+        {
+            if (indiceAtual > 0)
+            {
+                indiceAtual--;
+                MostrarProdutoAtual();
+            }
+        }
     }
 }
-

@@ -78,7 +78,7 @@ namespace Equipa24_Eventos_Delegados
                 MostraMensagem("Ficheiro Importado!");
             }
         }
-        private void MostrarProduto(ref Produto produto)
+        public void MostrarProduto(ref Produto produto)
         {
             txtID.Text = Convert.ToString(produto.Id);
             txtProduto.Text = produto.CodProduto.ToString();
@@ -137,6 +137,39 @@ namespace Equipa24_Eventos_Delegados
             cboSeleciona.Refresh();
         }
 
-       
+        public void AtivarBotoesNavegacao()
+        {
+            btnAnterior.Enabled = true;
+            btnProximo.Enabled = true;
+            btnGravar.Enabled = true;
+            btnPdf.Enabled = true;
+        }
+
+
+        /// Solicita à classe Visao que retroceda para o produto anterior
+
+        private void btnAnterior_Click(object sender, EventArgs e)
+        {
+            visao.RetrocederProduto();
+        }
+
+        /// Solicita à classe Visao que avance para o próximo produto
+
+        private void btnProximo_Click(object sender, EventArgs e)
+        {
+            visao.AvancarProduto();
+        }
+
+        private void btnAnterior_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void btnProximo_MouseClick(object sender, MouseEventArgs e)
+        {
+
+        }
     }
+
+
 }
