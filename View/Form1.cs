@@ -14,6 +14,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
+using System.Diagnostics; 
+
 
 namespace Equipa24_Eventos_Delegados
 {
@@ -167,6 +171,68 @@ namespace Equipa24_Eventos_Delegados
 
         private void btnProximo_MouseClick(object sender, MouseEventArgs e)
         {
+
+        }
+
+        private void btnPdf_Click(object sender, EventArgs e)
+        {
+            // Cria um novo documento PDF
+            PdfDocument document = new PdfDocument();
+            document.Info.Title = "Produto - Equipa24";
+
+            // Adiciona uma página
+            PdfPage page = document.AddPage();
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+            XFont font = new XFont("Verdana", 12);
+
+            // Desenha os dados do formulário
+            int y = 40;
+            gfx.DrawString("Produto: " + txtProduto.Text, font, XBrushes.Black, new XPoint(40, y));
+            y += 20;
+            gfx.DrawString("Descrição: " + txtDescricao.Text, font, XBrushes.Black, new XPoint(40, y));
+            y += 20;
+            gfx.DrawString("Texto complementar: " + txtTextoComplementar.Text, font, XBrushes.Black, new XPoint(40, y));
+            y += 20;
+            gfx.DrawString("Observações: " + txtObs.Text, font, XBrushes.Black, new XPoint(40, y));
+
+            // Guarda o ficheiro
+            string caminho = @"C:\LDS2425\FicheirosData\produto.pdf";
+            document.Save(caminho);
+
+            // Abre o PDF (opcional)
+            Process.Start("explorer", caminho);
+
+            // Mensagem de sucesso
+            MostraMensagem("PDF criado com sucesso!");
+        }
+
+        private void btnPdf_Click_1(object sender, EventArgs e)
+        {
+            // Cria um novo documento PDF
+            PdfDocument document = new PdfDocument();
+            document.Info.Title = "Produto - Equipa24";
+
+            // Adiciona uma página
+            PdfPage page = document.AddPage();
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+            XFont font = new XFont("Verdana", 12);
+
+            // Escreve os dados do formulário
+            int y = 40;
+            gfx.DrawString("Produto: " + txtProduto.Text, font, XBrushes.Black, new XPoint(40, y += 20));
+            gfx.DrawString("Descrição: " + txtDescricao.Text, font, XBrushes.Black, new XPoint(40, y += 20));
+            gfx.DrawString("Texto complementar: " + txtTextoComplementar.Text, font, XBrushes.Black, new XPoint(40, y += 20));
+            gfx.DrawString("Observações: " + txtObs.Text, font, XBrushes.Black, new XPoint(40, y += 20));
+
+            // Guarda o ficheiro
+            string caminho = @"C:\LDS2425\FicheirosData\produto.pdf";
+            document.Save(caminho);
+
+            // Abre automaticamente o PDF (opcional)
+            Process.Start("explorer", caminho);
+
+            // Mensagem de sucesso
+            MostraMensagem("PDF criado com sucesso!");
 
         }
     }
