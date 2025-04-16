@@ -265,7 +265,7 @@
             this.btnImportar.TabIndex = 47;
             this.btnImportar.Text = "Importar";
             this.btnImportar.UseVisualStyleBackColor = true;
-            this.btnImportar.Click += new System.EventHandler(this.btnImportar_Click_1);
+            this.btnImportar.Click += new System.EventHandler(this.btnImportar_Click);
             // 
             // cboSeleciona
             // 

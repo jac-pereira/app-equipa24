@@ -137,9 +137,6 @@ namespace Equipa24_Eventos_Delegados
             cboSeleciona.Refresh();
         }
 
-        private void btnImportar_Click_1(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }
