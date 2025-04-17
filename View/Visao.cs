@@ -156,6 +156,7 @@ namespace Equipa24_Eventos_Delegados.View
                 {
                     produto = p;
                     encontrou = true;
+                    indiceAtual = idAux - 1;
                     break;
                 }
             }

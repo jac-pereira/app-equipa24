@@ -33,19 +33,6 @@ namespace Equipa24_Eventos_Delegados
 
         public Visao Visao { get => visao; set => visao = value; }
 
-        public void Encerrar()
-        {
-            Application.Exit();
-        }
-
-        private void btnSair_Click(object sender, EventArgs e)
-        {
-            visao.CliqueEmSair(e);
-        }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            return;
-        }
         private void btnImportar_Click(object sender, EventArgs e)
         {
             // Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
@@ -109,23 +96,6 @@ namespace Equipa24_Eventos_Delegados
             cboSeleciona.Text = "Selecionar";
         }
 
-
-        private void MostraMensagem(string txt)
-        {
-            txtMensagens.Text += txt;
-            txtMensagens.Focus();
-            txtMensagens.AppendText("  ");
-
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtMensagens_Leave(object sender, EventArgs e)
-        {
-            txtMensagens.Text = string.Empty;
-        }
 
         private void cboSeleciona_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -265,6 +235,43 @@ namespace Equipa24_Eventos_Delegados
                 MostraMensagem("ID inválido.");
             }
         }
+
+
+        private void MostraMensagem(string txt)
+        {
+            txtMensagens.Text += txt;
+            txtMensagens.Focus();
+            txtMensagens.AppendText("  ");
+
+        }
+
+
+        private void txtMensagens_Leave(object sender, EventArgs e)
+        {
+            txtMensagens.Text = string.Empty;
+        }
+
+
+        public void Encerrar()
+        {
+            Application.Exit();
+        }
+
+        private void btnSair_Click(object sender, EventArgs e)
+        {
+            visao.CliqueEmSair(e);
+        }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            return;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+
     }
 
 

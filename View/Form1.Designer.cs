@@ -74,6 +74,7 @@
             this.txtMensagens.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtMensagens.Size = new System.Drawing.Size(456, 61);
             this.txtMensagens.TabIndex = 45;
+            this.txtMensagens.Leave += new System.EventHandler(this.txtMensagens_Leave);
             // 
             // label3
             // 
@@ -220,6 +221,7 @@
             this.btnSair.TabIndex = 29;
             this.btnSair.Text = "Sair";
             this.btnSair.UseVisualStyleBackColor = true;
+            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
             // txtProduto
             // 
@@ -281,6 +283,7 @@
             this.cboSeleciona.Size = new System.Drawing.Size(215, 21);
             this.cboSeleciona.TabIndex = 48;
             this.cboSeleciona.Text = "Selecionar";
+            this.cboSeleciona.SelectedIndexChanged += new System.EventHandler(this.cboSeleciona_SelectedIndexChanged);
             // 
             // Form1
             // 
@@ -313,6 +316,8 @@
             this.Controls.Add(this.pictureBoxEquipa24);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFoto)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEquipa24)).EndInit();
             this.ResumeLayout(false);
