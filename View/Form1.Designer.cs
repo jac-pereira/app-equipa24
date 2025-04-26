@@ -115,7 +115,7 @@
             this.btnPdf.TabIndex = 41;
             this.btnPdf.Text = "PDF";
             this.btnPdf.UseVisualStyleBackColor = true;
-            this.btnPdf.Click += new System.EventHandler(this.btnPdf_Click_1);
+            this.btnPdf.Click += new System.EventHandler(this.btnPdf_Click);
             // 
             // btnProximo
             // 
@@ -127,7 +127,6 @@
             this.btnProximo.Text = "Próximo";
             this.btnProximo.UseVisualStyleBackColor = true;
             this.btnProximo.Click += new System.EventHandler(this.btnProximo_Click);
-            this.btnProximo.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnProximo_MouseClick);
             // 
             // btnAnterior
             // 
@@ -139,7 +138,6 @@
             this.btnAnterior.Text = "Anterior";
             this.btnAnterior.UseVisualStyleBackColor = true;
             this.btnAnterior.Click += new System.EventHandler(this.btnAnterior_Click);
-            this.btnAnterior.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnAnterior_MouseClick);
             // 
             // label1
             // 
@@ -284,6 +282,7 @@
             this.cboSeleciona.TabIndex = 48;
             this.cboSeleciona.Text = "Selecionar";
             this.cboSeleciona.SelectedIndexChanged += new System.EventHandler(this.cboSeleciona_SelectedIndexChanged);
+            this.cboSeleciona.Leave += new System.EventHandler(this.cboSeleciona_Leave);
             // 
             // Form1
             // 
