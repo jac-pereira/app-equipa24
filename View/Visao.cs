@@ -69,7 +69,7 @@ namespace Equipa24_Eventos_Delegados.View
                 janela.LimpaCampos();
             }
             UtilizadorClicouImportar(origem, e);
-            if (listaProdutos != null && listaProdutos!=null)
+            if (listaProdutos != null && listaProdutos != null)
             {
                 CarregarComboSeleciona(ref comboBox);
                 PesquisarUltimoProduto(ref produto);
@@ -113,8 +113,9 @@ namespace Equipa24_Eventos_Delegados.View
 
         public void AtualizarListaDeProdutos()
         {
-            // Atualizar a lista de produtos recebidas do Model
-            PrecisoDeProdutos(ref listaProdutos);
+            // Atualizar a lista de produtos recebidas do Model     
+            if (PrecisoDeProdutos != null)
+                PrecisoDeProdutos(ref listaProdutos);
         }
 
 
@@ -146,23 +147,6 @@ namespace Equipa24_Eventos_Delegados.View
             }
         }
 
-        // Pesquisa por um produto com determinado ID (chamado na ComboBox)
-        public bool Procurar(int idAux, ref Produto produto)
-        {
-            bool encontrou = false;
-            foreach (Produto p in listaProdutos)
-            {
-                if ((int)p.Id == idAux)
-                {
-                    produto = p;
-                    encontrou = true;
-                    indiceAtual = idAux - 1;
-                    break;
-                }
-            }
-            return encontrou;
-        }
-
         // Avança para o próximo produto da lista, se existir
         public void AvancarProduto()
         {
@@ -182,6 +166,25 @@ namespace Equipa24_Eventos_Delegados.View
                 MostrarProdutoAtual();
             }
         }
+
+        // Pesquisa por um produto com determinado ID (chamado na ComboBox)
+        public bool Procurar(int idAux, ref Produto produto)
+        {
+            bool encontrou = false;
+            foreach (Produto p in listaProdutos)
+            {
+                if ((int)p.Id == idAux)
+                {
+                    produto = p;
+                    encontrou = true;
+                    indiceAtual = idAux - 1;
+                    break;
+                }
+            }
+            return encontrou;
+        }
+
+
 
         public Produto ObterProdutoPorId(int id)
         {

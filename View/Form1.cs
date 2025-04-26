@@ -16,7 +16,8 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
-using System.Diagnostics; 
+using System.Diagnostics;
+using System.IO;
 
 
 namespace Equipa24_Eventos_Delegados
@@ -80,10 +81,29 @@ namespace Equipa24_Eventos_Delegados
 
             // tratamento de exceção
             // pictureBoxFoto.ImageLocation = pasta + "F" + txtID.Text + ".png";
-            pictureBoxFoto.ImageLocation = produto.Foto;
-            pictureBoxFoto.Load();
+            try
+            {
 
+                pictureBoxFoto.ImageLocation = produto.Foto;
+                pictureBoxFoto.Load();
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("Erro no ficheiro da Foto\n Não foi enconttrado o ficheiro da imagem\n Comunique o problema\n Pode continuar sem visualizar a imagem");
+                pictureBoxFoto.ImageLocation = string.Empty;
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Erro no ficheiro da Foto\n Não é um ficheiro de imagem válido\n Comunique o problema\n Pode continuar sem visualizar a imagem");
+                pictureBoxFoto.ImageLocation = string.Empty;
+            }
 
+            catch (Exception)
+            {
+                MessageBox.Show("Erro no ficheiro da Foto\n Comunique o problema\n Pode continuar sem visualizar a imagem");
+                pictureBoxFoto.ImageLocation = string.Empty;
+            }
+   
 
         }
         public void LimpaCampos()
@@ -93,9 +113,7 @@ namespace Equipa24_Eventos_Delegados
             txtDescricao.Text = string.Empty;
             txtTextoComplementar.Text = string.Empty;
             txtObs.Text = string.Empty;
-            cboSeleciona.Text = "Selecionar";
         }
-
 
         private void cboSeleciona_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -109,6 +127,7 @@ namespace Equipa24_Eventos_Delegados
             }
             cboSeleciona.Text = "Selecionar";
             cboSeleciona.Refresh();
+
         }
 
         public void AtivarBotoesNavegacao()
@@ -271,7 +290,11 @@ namespace Equipa24_Eventos_Delegados
 
         }
 
-
+        private void cboSeleciona_Leave(object sender, EventArgs e)
+        {
+            cboSeleciona.Text = "Selecionar";
+            cboSeleciona.Refresh();
+        }
     }
 
 

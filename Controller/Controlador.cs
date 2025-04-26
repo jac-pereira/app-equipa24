@@ -16,7 +16,7 @@ namespace Equipa24_Eventos_Delegados.Controller
 {
     class Controlador
     {
-        bool sair;
+        //bool sair;
         Modelo modelo;
         Visao visao;
 
@@ -26,7 +26,7 @@ namespace Equipa24_Eventos_Delegados.Controller
 
         public Controlador()
         {
-            sair = false;
+            //sair = false;
             visao = new Visao(modelo);
             modelo = new Modelo(visao);
 
@@ -41,6 +41,8 @@ namespace Equipa24_Eventos_Delegados.Controller
 
         public void IniciarPrograma()
         {
+                    visao.AtivarInterface();
+            /*
             do
             {
                 try
@@ -53,13 +55,13 @@ namespace Equipa24_Eventos_Delegados.Controller
                     MessageBox.Show(ex.Message);
                 }
             } while (!sair);
-
+            */
 
         }
 
         private void UtilizadorClicouEmSair(object sender, EventArgs e)
         {
-            sair = true;
+            //sair = true;
             visao.Encerrar();
         }
 

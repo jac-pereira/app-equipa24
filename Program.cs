@@ -12,7 +12,6 @@ using System.Windows.Forms;
 namespace Equipa24_Eventos_Delegados
 {
 
-
     static class Equipa24
     {
         // pasta utilizada para os ficheiros 

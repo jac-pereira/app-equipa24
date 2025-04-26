@@ -18,12 +18,12 @@ namespace Equipa24_Eventos_Delegados.Model
         private Visao visao;
         private List<Produto> produtos;
         private DataTable dtProdutos = new DataTable();
-        
+
 
         public delegate void NotificarListaDeProdutosAlterada();
         public event NotificarListaDeProdutosAlterada ListaDeProdutosAlterada;
 
-        public Modelo (Visao v)
+        public Modelo(Visao v)
         {
             visao = v;
             produtos = new List<Produto>();
@@ -38,7 +38,7 @@ namespace Equipa24_Eventos_Delegados.Model
             ProdutosDT.ObterProdutos(ref dtProdutos, ref ficheiro);
 
             produtos.Clear();
-            foreach(DataRow dr in dtProdutos.Rows)
+            foreach (DataRow dr in dtProdutos.Rows)
             {
                 Produto p = new Produto();
                 p.Id = Convert.ToInt32(dr[0]);
@@ -67,11 +67,9 @@ namespace Equipa24_Eventos_Delegados.Model
             // da lista fornecida alterasse as do próprio Model
             // visto serem referências.
 
-            listadeprodutos=new List<Produto>();
-            foreach(Produto p  in produtos)
-            {  
+            listadeprodutos = new List<Produto>();
+            foreach (Produto p in produtos)
                 listadeprodutos.Add(p.Clone());
-            }
         }
     }
 }

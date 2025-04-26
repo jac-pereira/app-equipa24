@@ -284,6 +284,7 @@
             this.cboSeleciona.TabIndex = 48;
             this.cboSeleciona.Text = "Selecionar";
             this.cboSeleciona.SelectedIndexChanged += new System.EventHandler(this.cboSeleciona_SelectedIndexChanged);
+            this.cboSeleciona.Leave += new System.EventHandler(this.cboSeleciona_Leave);
             // 
             // Form1
             // 
