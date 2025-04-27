@@ -14,8 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using PdfSharp.Pdf;
-using PdfSharp.Drawing;
+//using PdfSharp.Pdf;
+//using PdfSharp.Drawing;
 using System.Diagnostics;
 using System.IO;
 
@@ -25,7 +25,9 @@ namespace Equipa24_Eventos_Delegados
     internal partial class Form1 : Form
     {
         Visao visao;
-        private const string pasta = @"C:\LDS2425\FicheirosData\Imagens\";
+        // está public para permitir "class ProdutosDT" aceder a esta propriedade, nesta fase de desenvolvimento! Alterar mais tarde
+        public const string pastaImagens = @"C:\LDS2425\FicheirosData\Imagens\";
+        private const string pastaPDF = @"C:\LDS2425\FicheirosData\PDF\";
 
         internal Form1()
         {
@@ -103,7 +105,7 @@ namespace Equipa24_Eventos_Delegados
                 MessageBox.Show("Erro no ficheiro da Foto\n Comunique o problema\n Pode continuar sem visualizar a imagem");
                 pictureBoxFoto.ImageLocation = string.Empty;
             }
-   
+
 
         }
         public void LimpaCampos()
@@ -135,7 +137,7 @@ namespace Equipa24_Eventos_Delegados
             btnAnterior.Enabled = true;
             btnProximo.Enabled = true;
             btnGravar.Enabled = true;
-            btnPdf.Enabled = true;
+            //btnPdf.Enabled = true;
         }
 
 
@@ -163,6 +165,7 @@ namespace Equipa24_Eventos_Delegados
 
         }
 
+        /*
         private void btnPdf_Click(object sender, EventArgs e)
         {
             // Cria um novo documento PDF
@@ -184,8 +187,11 @@ namespace Equipa24_Eventos_Delegados
             y += 20;
             gfx.DrawString("Observações: " + txtObs.Text, font, XBrushes.Black, new XPoint(40, y));
 
+
+            // Colocar bloco try...catch...   alterar forma de atribuir valor a string caminho
             // Guarda o ficheiro
-            string caminho = @"C:\LDS2425\FicheirosData\produto.pdf";
+            //string caminho = @"C:\LDS2425\FicheirosData\produto.pdf";
+            string caminho = pastaPDF + "produtoA.pdf"; // topo do código
             document.Save(caminho);
 
             // Abre o PDF (opcional)
@@ -193,8 +199,8 @@ namespace Equipa24_Eventos_Delegados
 
             // Mensagem de sucesso
             MostraMensagem("PDF criado com sucesso!");
-        }
-
+        }*/
+        /*
         private void btnPdf_Click_1(object sender, EventArgs e)
         {
             // Cria um novo documento PDF
@@ -213,8 +219,11 @@ namespace Equipa24_Eventos_Delegados
             gfx.DrawString("Texto complementar: " + txtTextoComplementar.Text, font, XBrushes.Black, new XPoint(40, y += 20));
             gfx.DrawString("Observações: " + txtObs.Text, font, XBrushes.Black, new XPoint(40, y += 20));
 
+
+            // Colocar bloco try...catch...   alterar forma de atribuir valor a string caminho
             // Guarda o ficheiro
-            string caminho = @"C:\LDS2425\FicheirosData\produto.pdf";
+            //string caminho = @"C:\LDS2425\FicheirosData\produto.pdf";
+            string caminho = pastaPDF + "produtoB.pdf";  // topo do código
             document.Save(caminho);
 
             // Abre automaticamente o PDF (opcional)
@@ -223,7 +232,7 @@ namespace Equipa24_Eventos_Delegados
             // Mensagem de sucesso
             MostraMensagem("PDF criado com sucesso!");
 
-        }
+        }*/
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
@@ -294,6 +303,11 @@ namespace Equipa24_Eventos_Delegados
         {
             cboSeleciona.Text = "Selecionar";
             cboSeleciona.Refresh();
+        }
+
+        private void btnPdf_Click(object sender, EventArgs e)
+        {
+
         }
     }
 

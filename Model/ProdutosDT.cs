@@ -13,7 +13,8 @@ namespace Equipa24_Eventos_Delegados.Model
     public class ProdutosDT
     {
         // local de armazenamento das imagens
-        private const string pastaImagens = @"C:\LDS2425\FicheirosData\Imagens\";
+        // private const string pastaImagens = @"C:\LDS2425\FicheirosData\Imagens\";
+        private const string pastaImagens = Form1.pastaImagens;
 
         // Separador das colunas no ficheiro "csv"
         private const char cSplit = ';';
