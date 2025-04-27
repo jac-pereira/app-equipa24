@@ -115,7 +115,6 @@
             this.btnPdf.TabIndex = 41;
             this.btnPdf.Text = "PDF";
             this.btnPdf.UseVisualStyleBackColor = true;
-            this.btnPdf.Click += new System.EventHandler(this.btnPdf_Click_1);
             // 
             // btnProximo
             // 
