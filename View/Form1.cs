@@ -18,6 +18,7 @@ using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System.Diagnostics;
 using System.IO;
+using FolhetosPDF;
 
 
 namespace Equipa24_Eventos_Delegados
@@ -38,7 +39,7 @@ namespace Equipa24_Eventos_Delegados
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
-            string  str;
+            string str;
             str = visao.CliqueEmGravar();
 
             if (!str.Equals(string.Empty))
@@ -65,7 +66,7 @@ namespace Equipa24_Eventos_Delegados
                 MostraMensagem("Ficheiro Importado!");
             }
         }
-       
+
         /// Solicita à classe Visao que retroceda para o produto anterior
         private void btnAnterior_Click(object sender, EventArgs e)
         {
@@ -145,41 +146,8 @@ namespace Equipa24_Eventos_Delegados
             btnProximo.Enabled = true;
             btnGravar.Enabled = true;
             btnPdf.Enabled = true;
+            btnPdfFoto.Enabled = true;
         }
-
-        private void btnPdf_Click(object sender, EventArgs e)
-        {
-            string pastaPDF = Equipa24.PastaPDF;
-            string caminho = string.Empty;
-
-            // Cria um novo documento PDF
-            PdfDocument document = new PdfDocument();
-            document.Info.Title = "Produto - Equipa24";
-
-            // Adiciona uma página
-            PdfPage page = document.AddPage();
-            XGraphics gfx = XGraphics.FromPdfPage(page);
-            XFont font = new XFont("Verdana", 12);
-
-            // Escreve os dados do formulário / produto a ser visualizado
-            int y = 40;
-            gfx.DrawString("Produto: " + produto.CodProduto, font, XBrushes.Black, new XPoint(40, y += 20));
-            gfx.DrawString("Descrição: " + produto.Descricao, font, XBrushes.Black, new XPoint(40, y += 20));
-            gfx.DrawString("Texto complementar: " + produto.TextoComplementar, font, XBrushes.Black, new XPoint(40, y += 20));
-            gfx.DrawString("Observações: " + produto.Obs, font, XBrushes.Black, new XPoint(40, y += 20));
-
-            caminho = pastaPDF + "produto_" + produto.Id + ".pdf";
-            // Guarda o ficheiro
-            document.Save(caminho);
-
-            // Abre automaticamente o PDF (opcional)
-            Process.Start("explorer", caminho);
-
-            // Mensagem de sucesso
-            MostraMensagem("PDF criado com sucesso!");
-
-        }
-
 
 
         private void MostraMensagem(string txt)
@@ -220,7 +188,19 @@ namespace Equipa24_Eventos_Delegados
         {
             Application.Exit();
         }
-    }
 
+
+        private void btnPdf_Click(object sender, EventArgs e)
+        {
+            ExportarPDF exportarPDF = new ExportarPDF(produto);
+            MostraMensagem(exportarPDF.Exportar());
+        }
+
+        private void btnPdfFoto_Click(object sender, EventArgs e)
+        {
+            ExportarPDF exportarPDF = new ExportarPDF(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
+            MostraMensagem(exportarPDF.ExportarFoto());
+        }
+    }
 
 }

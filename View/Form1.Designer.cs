@@ -53,6 +53,7 @@
             this.pictureBoxEquipa24 = new System.Windows.Forms.PictureBox();
             this.btnImportar = new System.Windows.Forms.Button();
             this.cboSeleciona = new System.Windows.Forms.ComboBox();
+            this.btnPdfFoto = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFoto)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEquipa24)).BeginInit();
             this.SuspendLayout();
@@ -109,7 +110,7 @@
             // btnPdf
             // 
             this.btnPdf.Enabled = false;
-            this.btnPdf.Location = new System.Drawing.Point(309, 322);
+            this.btnPdf.Location = new System.Drawing.Point(250, 322);
             this.btnPdf.Name = "btnPdf";
             this.btnPdf.Size = new System.Drawing.Size(45, 23);
             this.btnPdf.TabIndex = 41;
@@ -284,11 +285,23 @@
             this.cboSeleciona.SelectedIndexChanged += new System.EventHandler(this.cboSeleciona_SelectedIndexChanged);
             this.cboSeleciona.Leave += new System.EventHandler(this.cboSeleciona_Leave);
             // 
+            // btnPdfFoto
+            // 
+            this.btnPdfFoto.Enabled = false;
+            this.btnPdfFoto.Location = new System.Drawing.Point(294, 322);
+            this.btnPdfFoto.Name = "btnPdfFoto";
+            this.btnPdfFoto.Size = new System.Drawing.Size(61, 23);
+            this.btnPdfFoto.TabIndex = 49;
+            this.btnPdfFoto.Text = "PDF Foto";
+            this.btnPdfFoto.UseVisualStyleBackColor = true;
+            this.btnPdfFoto.Click += new System.EventHandler(this.btnPdfFoto_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(487, 459);
+            this.Controls.Add(this.btnPdfFoto);
             this.Controls.Add(this.cboSeleciona);
             this.Controls.Add(this.btnImportar);
             this.Controls.Add(this.label4);
@@ -351,5 +364,6 @@
         private System.Windows.Forms.PictureBox pictureBoxEquipa24;
         private System.Windows.Forms.Button btnImportar;
         private System.Windows.Forms.ComboBox cboSeleciona;
+        private System.Windows.Forms.Button btnPdfFoto;
     }
 }
