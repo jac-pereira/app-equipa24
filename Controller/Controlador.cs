@@ -30,33 +30,19 @@ namespace Equipa24_Eventos_Delegados.Controller
             visao = new Visao(modelo);
             modelo = new Modelo(visao);
 
+            modelo.ListaDeProdutosAlterada += visao.AtualizarListaDeProdutos;
+            
             visao.UtilizadorClicouEmSair += UtilizadorClicouEmSair;
-
             visao.UtilizadorClicouImportar += UtilizadorClicouImportar;
             visao.PrecisoDeProdutos += modelo.SolicitarListaProdutos;
 
-            modelo.ListaDeProdutosAlterada += visao.AtualizarListaDeProdutos;
 
+            visao.UtilizadorClicouEmGravar += modelo.Gravar; 
         }
 
         public void IniciarPrograma()
         {
-                    visao.AtivarInterface();
-            /*
-            do
-            {
-                try
-                {
-                    //Implementar....
-                    visao.AtivarInterface();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            } while (!sair);
-            */
-
+            visao.AtivarInterface();
         }
 
         private void UtilizadorClicouEmSair(object sender, EventArgs e)
@@ -69,10 +55,10 @@ namespace Equipa24_Eventos_Delegados.Controller
         {
             //Implementar....
             string ficheiro = null;
-            visao.FicheiroParaImportar(ref ficheiro);
+            visao.NomeDoFicheiroParaImportar(ref ficheiro);
             if (ficheiro != null)
             {
-                modelo.Importar(ref ficheiro);
+                modelo.Importar(ficheiro);
 
             }
         }

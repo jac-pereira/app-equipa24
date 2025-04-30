@@ -13,7 +13,7 @@ namespace Equipa24_Eventos_Delegados.Model
     public class ProdutosDT
     {
         // local de armazenamento das imagens
-        private const string pastaImagens = @"C:\LDS2425\FicheirosData\Imagens\";
+        private static string pastaImagens = Equipa24.PastaImagens;
 
         // Separador das colunas no ficheiro "csv"
         private const char cSplit = ';';
@@ -42,10 +42,8 @@ namespace Equipa24_Eventos_Delegados.Model
         }
 
         // Ler Ficheiro 
-        public static void ObterProdutos(ref DataTable dt, ref string ficheiro)
+        public static void ObterProdutos(ref DataTable dt, string ficheiro)
         {
-
-
             try
             {
                 using var sr = new StreamReader(ficheiro);
@@ -79,5 +77,45 @@ namespace Equipa24_Eventos_Delegados.Model
 
         }
 
+
+        public static string GravarProdutos(DataTable dt)
+        {
+            string pastaCSV = Equipa24.PastaCSV;
+            string ficheiroOut = pastaCSV + "FicheiroOut.csv";
+
+            DialogResult resposta = MessageBox.Show("Vai Gravar Ficheiro CSV em disco! \n\n Confirma?", "Gravar em Ficheiro", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (resposta != DialogResult.Yes)
+            {
+                return string.Empty;
+            }
+            try
+            {
+                using (var sw = new StreamWriter(ficheiroOut, false))
+                {
+                    string linha = "";
+                    // Grava a primeira linha - cabeçalho
+                    sw.WriteLine("ID"+ cSplit + "Produto" + cSplit + "Descricao" + cSplit + "TextoComplementar" + cSplit + "Obs");
+
+                    // Gravar as restantes linhas
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        linha = Convert.ToString(row[0]);
+                        for (int i = 1; i < dt.Columns.Count; i++)
+                        {
+                            linha += cSplit + Convert.ToString(row[i]);
+                        }
+                        sw.WriteLine(linha);
+                    }
+                    sw.Close();
+                }
+                return "\nFoi gravado o ficheiro: " + ficheiroOut ; 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                MessageBox.Show("\nError a gravar ficheiro: " + ficheiroOut + "\n", "Gravação do Fciheiro \"csv\"", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return string.Empty;
+            }
+        }
     }
 }

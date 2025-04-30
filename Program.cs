@@ -15,7 +15,16 @@ namespace Equipa24_Eventos_Delegados
     static class Equipa24
     {
         // pasta utilizada para os ficheiros 
-        private const string pasta = @"C:\LDS2425\FicheirosData\";
+        private const string pastaCSV = @"\LDS2425\FicheirosData\";
+        private const string pastaPDF = @"\LDS2425\FicheirosData\PDF\";
+        private const string pastaImagens = @"\LDS2425\FicheirosData\Imagens\";
+
+        public static string PastaCSV => pastaCSV;
+
+        public static string PastaImagens => pastaImagens;
+
+        public static string PastaPDF => pastaPDF;
+
         //private const string ficheiro = pasta + "FicheiroProdutos.csv";
 
         /// <summary>

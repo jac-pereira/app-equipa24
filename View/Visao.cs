@@ -22,9 +22,11 @@ namespace Equipa24_Eventos_Delegados.View
         // Índice do produto atualmente selecionado na lista
         private int indiceAtual = -1;
 
+        /*
         // Propriedades auxiliares
         public int IndiceAtual { get => indiceAtual; set => indiceAtual = value; }
         public int TotalProdutos => listaProdutos != null ? listaProdutos.Count : 0;
+        */
 
         // Eventos que serão ligados no Controller
         public event System.EventHandler UtilizadorClicouImportar;
@@ -32,6 +34,9 @@ namespace Equipa24_Eventos_Delegados.View
 
         public delegate void SolicitacaoListaProdutos(ref List<Produto> listadeprodutos);
         public event SolicitacaoListaProdutos PrecisoDeProdutos;
+
+        public delegate string GravarProdutos();
+        public event GravarProdutos UtilizadorClicouEmGravar;
 
         internal Visao(Modelo m)
         {
@@ -52,6 +57,15 @@ namespace Equipa24_Eventos_Delegados.View
         {
             UtilizadorClicouEmSair(this, e);
         }
+
+        public string CliqueEmGravar()
+        {
+
+            return UtilizadorClicouEmGravar();
+            //return true;
+
+        }
+
 
         public void Encerrar()
         {
@@ -92,7 +106,7 @@ namespace Equipa24_Eventos_Delegados.View
         }
 
 
-        public void FicheiroParaImportar(ref string ficheiro)
+        public void NomeDoFicheiroParaImportar(ref string ficheiro)
         {
             try
             {
@@ -109,17 +123,12 @@ namespace Equipa24_Eventos_Delegados.View
             }
         }
 
-
-
         public void AtualizarListaDeProdutos()
         {
             // Atualizar a lista de produtos recebidas do Model     
             if (PrecisoDeProdutos != null)
                 PrecisoDeProdutos(ref listaProdutos);
         }
-
-
-
 
         // Obtém o último produto importado
         public void PesquisarUltimoProduto(ref Produto produto)
@@ -137,67 +146,40 @@ namespace Equipa24_Eventos_Delegados.View
             indiceAtual = -1;
         }
 
-        // Atualiza o formulário com o produto atualmente selecionado
-        public void MostrarProdutoAtual()
-        {
-            if (listaProdutos != null && indiceAtual >= 0 && indiceAtual < listaProdutos.Count)
-            {
-                Produto produto = listaProdutos[indiceAtual];
-                janela.MostrarProduto(ref produto);
-            }
-        }
 
         // Avança para o próximo produto da lista, se existir
-        public void AvancarProduto()
+        public Produto AvancarProduto()
         {
             if (indiceAtual < listaProdutos.Count - 1)
             {
                 indiceAtual++;
-                MostrarProdutoAtual();
             }
+                return listaProdutos[indiceAtual];
         }
 
         // Recuar para o produto anterior na lista, se existir
-        public void RetrocederProduto()
+        public Produto RetrocederProduto()
         {
             if (indiceAtual > 0)
             {
                 indiceAtual--;
-                MostrarProdutoAtual();
             }
+                return listaProdutos[indiceAtual];
         }
 
         // Pesquisa por um produto com determinado ID (chamado na ComboBox)
-        public bool Procurar(int idAux, ref Produto produto)
+        public Produto Procurar(int idAux)
         {
-            bool encontrou = false;
+            // bool encontrou = false;
             foreach (Produto p in listaProdutos)
             {
                 if ((int)p.Id == idAux)
                 {
-                    produto = p;
-                    encontrou = true;
                     indiceAtual = idAux - 1;
                     break;
                 }
             }
-            return encontrou;
-        }
-
-
-
-        public Produto ObterProdutoPorId(int id)
-        {
-            if (listaProdutos != null)
-            {
-                foreach (Produto p in listaProdutos)
-                {
-                    if (p.Id == id)
-                        return p;
-                }
-            }
-
-            return null;
+            return listaProdutos[indiceAtual];
         }
 
     }

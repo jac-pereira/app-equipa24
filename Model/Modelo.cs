@@ -29,13 +29,13 @@ namespace Equipa24_Eventos_Delegados.Model
             produtos = new List<Produto>();
         }
 
-        public void Importar(ref string ficheiro)
+        public void Importar(string ficheiro)
         {
 
             // Importar Ficheiro
             // Alterar a lista de produtos
             ProdutosDT.Colunas(ref dtProdutos);
-            ProdutosDT.ObterProdutos(ref dtProdutos, ref ficheiro);
+            ProdutosDT.ObterProdutos(ref dtProdutos, ficheiro);
 
             produtos.Clear();
             foreach (DataRow dr in dtProdutos.Rows)
@@ -54,6 +54,13 @@ namespace Equipa24_Eventos_Delegados.Model
             // Notifica a que as listas foram alteradas.
             ListaDeProdutosAlterada();
 
+        }
+
+        // Gravar FicheiroOut
+        public string Gravar()
+        {
+            return ProdutosDT.GravarProdutos(dtProdutos);
+            //return true;
         }
 
         public void SolicitarListaProdutos(ref List<Produto> listadeprodutos)

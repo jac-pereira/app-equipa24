@@ -25,7 +25,8 @@ namespace Equipa24_Eventos_Delegados
     internal partial class Form1 : Form
     {
         Visao visao;
-        private const string pasta = @"C:\LDS2425\FicheirosData\Imagens\";
+
+        private Produto produto;
 
         internal Form1()
         {
@@ -34,43 +35,51 @@ namespace Equipa24_Eventos_Delegados
 
         public Visao Visao { get => visao; set => visao = value; }
 
+
+        private void btnGravar_Click(object sender, EventArgs e)
+        {
+            string  str;
+            str = visao.CliqueEmGravar();
+
+            if (!str.Equals(string.Empty))
+            {
+                // MostraMensagem("Ficheiro gravado com sucesso!");
+                MostraMensagem(str);
+            }
+            else
+            {
+                MostraMensagem("Ficheiro não foi gravado!");
+            }
+
+        }
+
         private void btnImportar_Click(object sender, EventArgs e)
         {
-            // Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
-            // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
-            //
-            // O Visual Studio cria automaticamente este método btnImportar_Click com a interface visual
-            // Mantendo essa ligação, podemos continuar a usar a edição visual
-            //
-            // Então comunicamos aqui à nossa classe central do componente View o clique no botão.
-            //
-            // Podíamos igualmente ir a     View.Designer.cs 
-            // associar diretamente     this.btnImportar.Click 
-            // ao método da classe      Controller
-            // mas isso desativaria a edição visual
-            // e faria com que essa ligação entre classes 
-            // estivesse a ser feita fora do Controller.
-            //
-            // Por isso, limitamo-nos a comunicar aqui o 
-            // evento Click à classe central da View que o relançará
-            // como o evento UtilizadorClicouImportar.
-            //
-            // Isto permite que seja o Controller a associar o destino dele.
-            // Não precisávamos de manter os parâmetros, mantivemo-los apenas
-            // por uma questão de enriquecer o exemplo, já que não os usámos 
-            // noutros eventos deste código exemplificativo
 
-
-            Produto produto = null;
+            produto = null;
             visao.CliqueEmImportar(sender, e, ref produto, ref cboSeleciona);
 
             if (produto != null)
             {
-                MostrarProduto(ref produto);
+                MostrarProduto();
                 MostraMensagem("Ficheiro Importado!");
             }
         }
-        public void MostrarProduto(ref Produto produto)
+       
+        /// Solicita à classe Visao que retroceda para o produto anterior
+        private void btnAnterior_Click(object sender, EventArgs e)
+        {
+            produto = visao.RetrocederProduto();
+            MostrarProduto();
+        }
+
+        /// Solicita à classe Visao que avance para o próximo produto
+        private void btnProximo_Click(object sender, EventArgs e)
+        {
+            produto = visao.AvancarProduto();
+            MostrarProduto();
+        }
+        public void MostrarProduto()
         {
             txtID.Text = Convert.ToString(produto.Id);
             txtProduto.Text = produto.CodProduto.ToString();
@@ -103,7 +112,7 @@ namespace Equipa24_Eventos_Delegados
                 MessageBox.Show("Erro no ficheiro da Foto\n Comunique o problema\n Pode continuar sem visualizar a imagem");
                 pictureBoxFoto.ImageLocation = string.Empty;
             }
-   
+
 
         }
         public void LimpaCampos()
@@ -118,12 +127,12 @@ namespace Equipa24_Eventos_Delegados
         private void cboSeleciona_SelectedIndexChanged(object sender, EventArgs e)
         {
             int idAux = cboSeleciona.SelectedIndex + 1;
-            bool flag = false;
-            Produto produto = null;
-            flag = Visao.Procurar(idAux, ref produto);
-            if (flag)
+            // bool flag = false;
+            produto = null;
+            produto = Visao.Procurar(idAux);
+            if (produto != null)
             {
-                MostrarProduto(ref produto);
+                MostrarProduto();
             }
             cboSeleciona.Text = "Selecionar";
             cboSeleciona.Refresh();
@@ -138,23 +147,11 @@ namespace Equipa24_Eventos_Delegados
             btnPdf.Enabled = true;
         }
 
-
-        /// Solicita à classe Visao que retroceda para o produto anterior
-
-        private void btnAnterior_Click(object sender, EventArgs e)
-        {
-            visao.RetrocederProduto();
-        }
-
-        /// Solicita à classe Visao que avance para o próximo produto
-
-        private void btnProximo_Click(object sender, EventArgs e)
-        {
-            visao.AvancarProduto();
-        }
-
         private void btnPdf_Click(object sender, EventArgs e)
         {
+            string pastaPDF = Equipa24.PastaPDF;
+            string caminho = string.Empty;
+
             // Cria um novo documento PDF
             PdfDocument document = new PdfDocument();
             document.Info.Title = "Produto - Equipa24";
@@ -164,15 +161,15 @@ namespace Equipa24_Eventos_Delegados
             XGraphics gfx = XGraphics.FromPdfPage(page);
             XFont font = new XFont("Verdana", 12);
 
-            // Escreve os dados do formulário
+            // Escreve os dados do formulário / produto a ser visualizado
             int y = 40;
-            gfx.DrawString("Produto: " + txtProduto.Text, font, XBrushes.Black, new XPoint(40, y += 20));
-            gfx.DrawString("Descrição: " + txtDescricao.Text, font, XBrushes.Black, new XPoint(40, y += 20));
-            gfx.DrawString("Texto complementar: " + txtTextoComplementar.Text, font, XBrushes.Black, new XPoint(40, y += 20));
-            gfx.DrawString("Observações: " + txtObs.Text, font, XBrushes.Black, new XPoint(40, y += 20));
+            gfx.DrawString("Produto: " + produto.CodProduto, font, XBrushes.Black, new XPoint(40, y += 20));
+            gfx.DrawString("Descrição: " + produto.Descricao, font, XBrushes.Black, new XPoint(40, y += 20));
+            gfx.DrawString("Texto complementar: " + produto.TextoComplementar, font, XBrushes.Black, new XPoint(40, y += 20));
+            gfx.DrawString("Observações: " + produto.Obs, font, XBrushes.Black, new XPoint(40, y += 20));
 
+            caminho = pastaPDF + "produto_" + produto.Id + ".pdf";
             // Guarda o ficheiro
-            string caminho = @"C:\LDS2425\FicheirosData\produto.pdf";
             document.Save(caminho);
 
             // Abre automaticamente o PDF (opcional)
@@ -183,35 +180,6 @@ namespace Equipa24_Eventos_Delegados
 
         }
 
-        private void btnGravar_Click(object sender, EventArgs e)
-        {
-            int idAtual;
-
-            if (int.TryParse(txtID.Text, out idAtual))
-            {
-                Produto produto = visao.ObterProdutoPorId(idAtual);
-
-                if (produto != null)
-                {
-                    // Atualiza os valores do produto com os dados do formulário
-                    produto.CodProduto = txtProduto.Text;
-                    produto.Descricao = txtDescricao.Text;
-                    produto.TextoComplementar = txtTextoComplementar.Text;
-                    produto.Obs = txtObs.Text;
-                    produto.Foto = pictureBoxFoto.ImageLocation;
-
-                    MostraMensagem("Alterações guardadas com sucesso!");
-                }
-                else
-                {
-                    MostraMensagem("Produto não encontrado.");
-                }
-            }
-            else
-            {
-                MostraMensagem("ID inválido.");
-            }
-        }
 
 
         private void MostraMensagem(string txt)
@@ -221,37 +189,36 @@ namespace Equipa24_Eventos_Delegados
             txtMensagens.AppendText("  ");
 
         }
-
-
         private void txtMensagens_Leave(object sender, EventArgs e)
         {
             txtMensagens.Text = string.Empty;
         }
-
-
-        public void Encerrar()
-        {
-            Application.Exit();
-        }
-
         private void btnSair_Click(object sender, EventArgs e)
         {
             visao.CliqueEmSair(e);
         }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            return;
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
-
         private void cboSeleciona_Leave(object sender, EventArgs e)
         {
             cboSeleciona.Text = "Selecionar";
             cboSeleciona.Refresh();
+        }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // MessageBox.Show("Form1_FormClosing");
+            return;
+        }
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // MessageBox.Show("Form1_FormClosed");
+            return;
+        }
+        public void Encerrar()
+        {
+            Application.Exit();
         }
     }
 
