@@ -3,6 +3,7 @@
 
 using Equipa24_Eventos_Delegados.Controller;
 using Equipa24_Eventos_Delegados.Model;
+using FolhetosPDF.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,13 @@ namespace Equipa24_Eventos_Delegados.View
         public delegate string GravarProdutos();
         public event GravarProdutos UtilizadorClicouEmGravar;
 
+        //public delegate string ExportarProdutoPDF(Produto produto);
+        //public event ExportarProdutoPDF ClicouEmPDF;
+
+        // Evento emitido pela View
+        public event Action<Produto> ClicouEmPDF;
+        public event Action<Produto, string, string> ClicouEmPdfFoto;
+
         internal Visao(Modelo m)
         {
             modelo = m;
@@ -53,6 +61,25 @@ namespace Equipa24_Eventos_Delegados.View
             janela.ShowDialog();
         }
 
+
+        public void CliqueEmPDF(Produto produto)
+        {
+            // Emite o evento com o Produto como argumento
+            ClicouEmPDF?.Invoke(produto);
+        }
+
+        public void CliqueEmPdfFoto(Produto produto)
+        {
+            // Emite o evento com o Produto e 2 strings como argumento
+            ClicouEmPdfFoto?.Invoke(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
+        }
+
+        public void MostrarMensagemPdf(string mensagem)
+        {
+            janela.MostrarMensagemPdf(mensagem);
+        }
+
+
         public void CliqueEmSair(EventArgs e)
         {
             UtilizadorClicouEmSair(this, e);
@@ -65,7 +92,6 @@ namespace Equipa24_Eventos_Delegados.View
             //return true;
 
         }
-
 
         public void Encerrar()
         {
@@ -154,7 +180,7 @@ namespace Equipa24_Eventos_Delegados.View
             {
                 indiceAtual++;
             }
-                return listaProdutos[indiceAtual];
+            return listaProdutos[indiceAtual];
         }
 
         // Recuar para o produto anterior na lista, se existir
@@ -164,7 +190,7 @@ namespace Equipa24_Eventos_Delegados.View
             {
                 indiceAtual--;
             }
-                return listaProdutos[indiceAtual];
+            return listaProdutos[indiceAtual];
         }
 
         // Pesquisa por um produto com determinado ID (chamado na ComboBox)

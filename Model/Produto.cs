@@ -52,16 +52,10 @@ namespace Equipa24_Eventos_Delegados.Model
             return p;
         }
 
-
-
-
         // métodos
         public override string ToString()
         {
-            string folheto = string.Empty;
-            folheto += "Folheto do Produto - ";
-            folheto += id;
-            return folheto;
+            return "Folheto do Produto - " + id;
         }
 
     }

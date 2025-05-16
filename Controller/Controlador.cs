@@ -3,6 +3,7 @@
 
 using Equipa24_Eventos_Delegados.Model;
 using Equipa24_Eventos_Delegados.View;
+using FolhetosPDF.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,11 @@ namespace Equipa24_Eventos_Delegados.Controller
             visao.UtilizadorClicouEmSair += UtilizadorClicouEmSair;
             visao.UtilizadorClicouImportar += UtilizadorClicouImportar;
             visao.PrecisoDeProdutos += modelo.SolicitarListaProdutos;
-            visao.UtilizadorClicouEmGravar += modelo.Gravar; 
+            visao.UtilizadorClicouEmGravar += modelo.Gravar;
+
+            // Subscreve o evento da View
+            visao.ClicouEmPDF += ExportarParaPDF;
+            visao.ClicouEmPdfFoto += ExportarParaPdfFoto;
 
         }
 
@@ -43,6 +48,25 @@ namespace Equipa24_Eventos_Delegados.Controller
         {
             visao.AtivarInterface();
         }
+
+        private void ExportarParaPDF(Produto produto)
+        {
+            ExportarPDF exportarPDF = new ExportarPDF(produto);
+            string resultado = exportarPDF.Exportar();
+
+            // Actualiza a View com o resultado
+            visao.MostrarMensagemPdf(resultado);
+        }
+        private void ExportarParaPdfFoto(Produto produto, string equipa, string empresa)
+        {
+            ExportarPDF exportarPDF = new ExportarPDF(produto, equipa, empresa);
+            string resultado = exportarPDF.ExportarFoto();
+
+            // Actualiza a View com o resultado
+            visao.MostrarMensagemPdf(resultado);
+        }
+
+
 
         private void UtilizadorClicouEmSair(object sender, EventArgs e)
         {
@@ -61,7 +85,6 @@ namespace Equipa24_Eventos_Delegados.Controller
 
             }
         }
-
 
     }
 }

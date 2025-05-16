@@ -18,7 +18,7 @@ using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System.Diagnostics;
 using System.IO;
-using FolhetosPDF;
+using FolhetosPDF.Model;
 
 
 namespace Equipa24_Eventos_Delegados
@@ -192,15 +192,15 @@ namespace Equipa24_Eventos_Delegados
 
         private void btnPdf_Click(object sender, EventArgs e)
         {
-            ExportarPDF exportarPDF = new ExportarPDF(produto);
-            MostraMensagem(exportarPDF.Exportar());
+            visao.CliqueEmPDF(produto);
         }
-
+        public void MostrarMensagemPdf(string mensagem)
+        {
+            MostraMensagem(mensagem);
+        }
         private void btnPdfFoto_Click(object sender, EventArgs e)
         {
-            ExportarPDF exportarPDF = new ExportarPDF(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
-            MostraMensagem(exportarPDF.ExportarFoto());
+            visao.CliqueEmPdfFoto(produto);
         }
     }
-
 }

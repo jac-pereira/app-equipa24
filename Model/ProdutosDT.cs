@@ -61,11 +61,19 @@ namespace Equipa24_Eventos_Delegados.Model
                     i++;
                     foto = pastaImagens + "F" + i + ".png";
 
-
-                    // Adicionar à tabela
-                    // para utilizar o incremento automático ...Add(null, ...) 
-                    // o valor da variável i tem de corresponder ao valor de incremento automático
-                    dt.Rows.Add(null, col[1], col[2], col[3], col[4], foto);
+                    try
+                    {
+                        // Adicionar à tabela
+                        // para utilizar o incremento automático ...Add(null, ...) 
+                        // o valor da variável i tem de corresponder ao valor de incremento automático
+                        dt.Rows.Add(null, col[1], col[2], col[3], col[4], foto);
+                    }
+                    catch (Exception ex)
+                    {
+                        // MessageBox.Show(ex.Message);
+                        MessageBox.Show(" Erro ao ler a linha " + i + "\n Número de colunas inferior ao necessário!\n ----------\n " + linha, "Adicionar Linha", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        i--;
+                    }
                 }
                 sr.Close();
 
@@ -94,7 +102,7 @@ namespace Equipa24_Eventos_Delegados.Model
                 {
                     string linha = "";
                     // Grava a primeira linha - cabeçalho
-                    sw.WriteLine("ID"+ cSplit + "Produto" + cSplit + "Descricao" + cSplit + "TextoComplementar" + cSplit + "Obs");
+                    sw.WriteLine("ID" + cSplit + "Produto" + cSplit + "Descricao" + cSplit + "TextoComplementar" + cSplit + "Obs");
 
                     // Gravar as restantes linhas
                     foreach (DataRow row in dt.Rows)
@@ -108,7 +116,7 @@ namespace Equipa24_Eventos_Delegados.Model
                     }
                     sw.Close();
                 }
-                return "\nFoi gravado o ficheiro: " + ficheiroOut ; 
+                return "\nFoi gravado o ficheiro: " + ficheiroOut;
             }
             catch (Exception ex)
             {
