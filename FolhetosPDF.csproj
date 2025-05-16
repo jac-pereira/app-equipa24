@@ -113,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\Controlador.cs" />
-    <Compile Include="ExportarPDF.cs" />
+    <Compile Include="Model\ExportarPDF.cs" />
     <Compile Include="InterfacePdf.cs" />
     <Compile Include="Model\Modelo.cs" />
     <Compile Include="Model\Produto.cs" />

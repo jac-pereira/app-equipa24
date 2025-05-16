@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FolhetosPDF
 {
-    internal interface InterfacePdf
+    internal interface IPdf
     {
         public string Exportar();
         public string ExportarFoto();

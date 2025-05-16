@@ -35,9 +35,8 @@ namespace Equipa24_Eventos_Delegados.Controller
             visao.UtilizadorClicouEmSair += UtilizadorClicouEmSair;
             visao.UtilizadorClicouImportar += UtilizadorClicouImportar;
             visao.PrecisoDeProdutos += modelo.SolicitarListaProdutos;
-
-
             visao.UtilizadorClicouEmGravar += modelo.Gravar; 
+
         }
 
         public void IniciarPrograma()
