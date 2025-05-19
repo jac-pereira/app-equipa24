@@ -12,7 +12,7 @@ namespace FolhetosPDF.Model
     internal class ExportarPDF : IPdf
     {
         private StringBuilder sbMsg = new StringBuilder();
-
+        private string msg;
         // local de armazenamento dos PDF
         private static string pastaPDF = Equipa24.PastaPDF;
         private static string caminho = string.Empty;
@@ -56,8 +56,12 @@ namespace FolhetosPDF.Model
             gfx.DrawString("Texto complementar: " + Artigo.TextoComplementar, font, XBrushes.Black, new XPoint(40, y += 20));
             gfx.DrawString("Observações: " + Artigo.Obs, font, XBrushes.Black, new XPoint(40, y += 20));
 
-            return GravarPdf(document, "");
+            msg = GravarPdf(document, "");
+            document.Close();
+            return msg;
+
         }
+
 
         // Gera ficheiro PDF com FOTO e texto centralizado.
         // Inclui as 2 "string" do construtor com 3 parâmetros.
@@ -69,7 +73,7 @@ namespace FolhetosPDF.Model
             {
                 //StringBuilder sb = new StringBuilder();
                 sbMsg.Clear();
-
+                
                 doc.Info.Title = "Produto - Equipa24";
 
                 // Adiciona uma página
@@ -128,9 +132,12 @@ namespace FolhetosPDF.Model
                 {
                     flag = false;
                 }
-                return GravarPdf(doc, sbMsg.ToString());
+                msg = GravarPdf(doc, sbMsg.ToString());
+                doc.Close();
+                return msg;
             }
         }
+
 
 
         // Grava o ficheiro PDF e inicia processo para abrir o PDF
