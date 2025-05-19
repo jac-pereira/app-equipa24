@@ -2,11 +2,7 @@
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
 using Equipa24_Eventos_Delegados.Controller;
-using Equipa24_Eventos_Delegados.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Equipa24_Eventos_Delegados

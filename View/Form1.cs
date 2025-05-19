@@ -1,25 +1,11 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
-using Equipa24_Eventos_Delegados.Controller;
 using Equipa24_Eventos_Delegados.Model;
 using Equipa24_Eventos_Delegados.View;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using PdfSharp.Pdf;
-using PdfSharp.Drawing;
-using System.Diagnostics;
 using System.IO;
-using FolhetosPDF.Model;
-
 
 namespace Equipa24_Eventos_Delegados
 {
@@ -80,6 +66,7 @@ namespace Equipa24_Eventos_Delegados
             produto = visao.AvancarProduto();
             MostrarProduto();
         }
+
         public void MostrarProduto()
         {
             txtID.Text = Convert.ToString(produto.Id);
@@ -116,6 +103,7 @@ namespace Equipa24_Eventos_Delegados
 
 
         }
+
         public void LimpaCampos()
         {
             txtID.Text = string.Empty;
@@ -149,8 +137,40 @@ namespace Equipa24_Eventos_Delegados
             btnPdfFoto.Enabled = true;
         }
 
+        private void btnSair_Click(object sender, EventArgs e)
+        {
+            visao.CliqueEmSair(e);
+        }
+ 
+        private void cboSeleciona_Leave(object sender, EventArgs e)
+        {
+            cboSeleciona.Text = "Selecionar";
+            cboSeleciona.Refresh();
+        }
 
-        private void MostraMensagem(string txt)
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // MessageBox.Show("Form1_FormClosing");
+            return;
+        }
+        
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // MessageBox.Show("Form1_FormClosed");
+            return;
+        }
+
+        private void btnPdf_Click(object sender, EventArgs e)
+        {
+            visao.CliqueEmPDF(produto);
+        }
+
+        private void btnPdfFoto_Click(object sender, EventArgs e)
+        {
+            visao.CliqueEmPdfFoto(produto);
+        }
+
+        public void MostraMensagem(string txt)
         {
             txtMensagens.Text += txt;
             txtMensagens.Focus();
@@ -161,46 +181,6 @@ namespace Equipa24_Eventos_Delegados
         {
             txtMensagens.Text = string.Empty;
         }
-        private void btnSair_Click(object sender, EventArgs e)
-        {
-            visao.CliqueEmSair(e);
-        }
-        private void Form1_Load(object sender, EventArgs e)
-        {
 
-        }
-        private void cboSeleciona_Leave(object sender, EventArgs e)
-        {
-            cboSeleciona.Text = "Selecionar";
-            cboSeleciona.Refresh();
-        }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // MessageBox.Show("Form1_FormClosing");
-            return;
-        }
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            // MessageBox.Show("Form1_FormClosed");
-            return;
-        }
-        public void Encerrar()
-        {
-            Application.Exit();
-        }
-
-
-        private void btnPdf_Click(object sender, EventArgs e)
-        {
-            visao.CliqueEmPDF(produto);
-        }
-        public void MostrarMensagemPdf(string mensagem)
-        {
-            MostraMensagem(mensagem);
-        }
-        private void btnPdfFoto_Click(object sender, EventArgs e)
-        {
-            visao.CliqueEmPdfFoto(produto);
-        }
     }
 }

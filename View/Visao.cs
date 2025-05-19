@@ -1,14 +1,9 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
-using Equipa24_Eventos_Delegados.Controller;
 using Equipa24_Eventos_Delegados.Model;
-using FolhetosPDF.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Equipa24_Eventos_Delegados.View
@@ -74,9 +69,9 @@ namespace Equipa24_Eventos_Delegados.View
             ClicouEmPdfFoto?.Invoke(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
         }
 
-        public void MostrarMensagemPdf(string mensagem)
+        public void MostrarMensagem(string mensagem)
         {
-            janela.MostrarMensagemPdf(mensagem);
+            janela.MostraMensagem(mensagem);
         }
 
 
@@ -95,7 +90,8 @@ namespace Equipa24_Eventos_Delegados.View
 
         public void Encerrar()
         {
-            janela.Encerrar();
+            // janela.Encerrar();
+            Application.Exit();
         }
 
         public void CliqueEmImportar(object origem, EventArgs e, ref Produto produto, ref ComboBox comboBox)
@@ -171,7 +167,6 @@ namespace Equipa24_Eventos_Delegados.View
         {
             indiceAtual = -1;
         }
-
 
         // Avança para o próximo produto da lista, se existir
         public Produto AvancarProduto()

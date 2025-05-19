@@ -1,37 +1,28 @@
 ﻿using Equipa24_Eventos_Delegados;
 using Equipa24_Eventos_Delegados.Model;
-using Equipa24_Eventos_Delegados.View;
-using Equipa24_Eventos_Delegados.Controller;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PdfSharp.Pdf;
 using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System;
 using System.Diagnostics;
-using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace FolhetosPDF.Model
 {
     internal class ExportarPDF : IPdf
     {
-        // local de armazenamento das imagens
+        private StringBuilder sbMsg = new StringBuilder();
+
+        // local de armazenamento dos PDF
         private static string pastaPDF = Equipa24.PastaPDF;
         private static string caminho = string.Empty;
 
+        // propriedades
         public Produto Artigo { get; set; }
         public string GrupoTrabalho { get; set; }
         public string Empresa { get; set; }
 
         // construtores
-        public ExportarPDF()
-        {
-            Artigo = new Produto();
-            GrupoTrabalho = string.Empty;
-            Empresa = string.Empty;
-        }
         public ExportarPDF(Produto artigo)
         {
             Artigo = artigo;
@@ -43,6 +34,8 @@ namespace FolhetosPDF.Model
             Empresa = empresa;
         }
 
+        // Gera ficheiro PDF sem FOTO e texto alinhado à esquerda.
+        // É utilizado o construtor com 1 parâmetro.
         public string Exportar()
         {
             // Cria um novo documento PDF
@@ -63,23 +56,20 @@ namespace FolhetosPDF.Model
             gfx.DrawString("Texto complementar: " + Artigo.TextoComplementar, font, XBrushes.Black, new XPoint(40, y += 20));
             gfx.DrawString("Observações: " + Artigo.Obs, font, XBrushes.Black, new XPoint(40, y += 20));
 
-            bool flag = true;   
-            flag = GravarPdf(document);
-            if (flag)
-            {
-                return "PDF criado com sucesso!";
-            }
-            else
-            {
-                return "Erro --> PDF não foi gerado!";
-            }
+            return GravarPdf(document, "");
         }
 
+        // Gera ficheiro PDF com FOTO e texto centralizado.
+        // Inclui as 2 "string" do construtor com 3 parâmetros.
         public string ExportarFoto()
         {
+
             // Cria um novo documento PDF
             using (var doc = new PdfDocument())
             {
+                //StringBuilder sb = new StringBuilder();
+                sbMsg.Clear();
+
                 doc.Info.Title = "Produto - Equipa24";
 
                 // Adiciona uma página
@@ -118,53 +108,55 @@ namespace FolhetosPDF.Model
                     textFormatter.DrawString(Artigo.Descricao, tipoFont1, XBrushes.Blue, new XRect(20, y += yIncremento, page.Width.Point, page.Height.Point));
                     textFormatter.DrawString(Artigo.TextoComplementar, tipoFont1, XBrushes.Blue, new XRect(yIncremento, y += 20, page.Width.Point, page.Height.Point));
                     textFormatter.DrawString(Artigo.Obs, tipoFont1, XBrushes.Blue, new XRect(20, y += yIncremento, page.Width.Point, page.Height.Point));
+
+                    try
+                    {
+                        XImage imagem = XImage.FromFile(Artigo.Foto);
+                        graphics.DrawImage(imagem, 20, 20, 100, 100);
+                    }
+                    catch
+                    {
+                        // MessageBox.Show("Erro na imagem " + Artigo.Foto + "\n\n\t Gerado ficheiro 'pdf' sem imagem!");
+                        sbMsg.Append("Erro na imagem ");
+                        sbMsg.Append(Artigo.Foto);
+                        sbMsg.AppendLine();
+                        sbMsg.Append("Gerado documento 'pdf' sem imagem!");
+                        sbMsg.AppendLine();
+                    }
                 }
                 catch
                 {
                     flag = false;
                 }
-
-
-                try
-                {
-                    XImage imagem = XImage.FromFile(Artigo.Foto);
-                    graphics.DrawImage(imagem, 20, 20, 100, 100);
-                }
-                catch
-                {
-                    MessageBox.Show("Erro na imagem " + Artigo.Foto + "\n\n\t Gerado ficheiro 'pdf' sem imagem!");
-
-                }
-
-                flag=GravarPdf(doc);
-
-                if (flag)
-                {
-                    // Mensagem de sucesso
-                    return "PDF foi gerado com sucesso!";
-                }
-                else
-                {
-                    return "Erro --> PDF não foi gerado!";
-                }
+                return GravarPdf(doc, sbMsg.ToString());
             }
         }
 
-        private bool GravarPdf(PdfDocument doc)
+
+        // Grava o ficheiro PDF e inicia processo para abrir o PDF
+        private string GravarPdf(PdfDocument doc, string msg)
         {
             bool flag = true;
             caminho = pastaPDF + "produto_" + Artigo.Id + ".pdf";
+            sbMsg.Clear();
+            sbMsg.Append(msg);
+
             if (flag)
             {
                 try
                 {
                     // Guarda o ficheiro
                     doc.Save(caminho);
+                    sbMsg.Append("Ficheiro \"PDF\" gravado com sucesso!");
                     flag = true;
                 }
                 catch
                 {
-                    MessageBox.Show("Erro no ficheiro de escrita " + caminho + "\n\n\t Não foi gerado ficheiro 'pdf'");
+                    // MessageBox.Show("Erro no ficheiro de escrita " + caminho + "\n\n\t Não foi gerado ficheiro 'pdf'");
+                    sbMsg.Append("Erro no ficheiro de escrita ");
+                    sbMsg.Append(caminho);
+                    sbMsg.AppendLine();
+                    sbMsg.Append("Não foi gravado ficheiro 'pdf'");
                     flag = false;
                 }
             }
@@ -175,13 +167,22 @@ namespace FolhetosPDF.Model
                 try
                 {
                     Process.Start("explorer", caminho);
+                    sbMsg.AppendLine();
+                    sbMsg.Append("A visualizar o ficheiro 'pdf'");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Erro no ficheiro de leitura " + caminho + "\n\n" + ex.ToString());
+                    //MessageBox.Show("Erro no ficheiro de leitura " + caminho + "\n\n" + ex.ToString());
+                    sbMsg.AppendLine();
+                    sbMsg.Append("A visualizar o ficheiro 'pdf'");
+                    sbMsg.AppendLine();
+                    sbMsg.Append("Erro no ficheiro de leitura ");
+                    sbMsg.Append(caminho);
+                    sbMsg.AppendLine();
+                    sbMsg.Append(ex.ToString());
                 }
             }
-            return flag;
+            return sbMsg.ToString();
         }
     }
 }
