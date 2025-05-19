@@ -31,6 +31,7 @@ namespace Equipa24_Eventos_Delegados.Controller
                 visao.PrecisoDeProdutos += modelo.SolicitarListaProdutos;
                 visao.UtilizadorClicouEmGravar += modelo.Gravar;
             }
+          
             // Subscreve o evento da View
             visao.ClicouEmPDF += ExportarParaPDF;
             visao.ClicouEmPdfFoto += ExportarParaPdfFoto;
