@@ -3,6 +3,7 @@
 
 using Equipa24_Eventos_Delegados.Model;
 using Equipa24_Eventos_Delegados.View;
+using FolhetosPDF;
 using FolhetosPDF.Model;
 using System;
 
@@ -20,21 +21,19 @@ namespace Equipa24_Eventos_Delegados.Controller
 
         public Controlador()
         {
-            {
-                visao = new Visao(modelo);
-                modelo = new Modelo(visao);
+            modelo = new Modelo(visao);
+            visao = new Visao(modelo);
 
-                modelo.ListaDeProdutosAlterada += visao.AtualizarListaDeProdutos;
+            visao.UtilizadorClicouEmGravar += modelo.Gravar;
+            visao.PrecisoDeProdutos += modelo.SolicitarListaProdutos;
+            modelo.ListaDeProdutosAlterada += visao.AtualizarListaDeProdutos;
 
-                visao.UtilizadorClicouEmSair += UtilizadorClicouEmSair;
-                visao.UtilizadorClicouImportar += UtilizadorClicouImportar;
-                visao.PrecisoDeProdutos += modelo.SolicitarListaProdutos;
-                visao.UtilizadorClicouEmGravar += modelo.Gravar;
-            }
-          
+            visao.UtilizadorClicouEmSair += UtilizadorClicouEmSair;
+            visao.UtilizadorClicouImportar += UtilizadorClicouImportar;
+
             // Subscreve o evento da View
             visao.ClicouEmPDF += ExportarParaPDF;
-            visao.ClicouEmPdfFoto += ExportarParaPdfFoto;
+            visao.ClicouEmPDFComFoto += modelo.ExportarParaPDFComFoto;
         }
 
         private void ExportarParaPDF(Produto produto)
@@ -42,13 +41,6 @@ namespace Equipa24_Eventos_Delegados.Controller
             ExportarPDF exportarPDF = new ExportarPDF(produto);
             visao.MostrarMensagem(exportarPDF.Exportar());
         }
-
-        private void ExportarParaPdfFoto(Produto produto, string equipa, string empresa)
-        {
-            ExportarPDF exportarPDF = new ExportarPDF(produto, equipa, empresa);
-            visao.MostrarMensagem(exportarPDF.ExportarFoto());
-        }
-
 
         public void IniciarPrograma()
         {
@@ -68,7 +60,6 @@ namespace Equipa24_Eventos_Delegados.Controller
             if (ficheiro != null)
             {
                 modelo.Importar(ficheiro);
-
             }
         }
 

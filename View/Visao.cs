@@ -2,6 +2,7 @@
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
 using Equipa24_Eventos_Delegados.Model;
+using FolhetosPDF;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -13,33 +14,50 @@ namespace Equipa24_Eventos_Delegados.View
         private Modelo modelo;
         private Form1 janela;
 
+        //private static string uc = Equipa24.Uc;
+        //private static string equipa = Equipa24.Equipa;
+
         private List<Produto> listaProdutos;
 
         // Índice do produto atualmente selecionado na lista
         private int indiceAtual = -1;
 
-        /*
-        // Propriedades auxiliares
-        public int IndiceAtual { get => indiceAtual; set => indiceAtual = value; }
-        public int TotalProdutos => listaProdutos != null ? listaProdutos.Count : 0;
-        */
-
         // Eventos que serão ligados no Controller
         public event System.EventHandler UtilizadorClicouImportar;
         public event System.EventHandler UtilizadorClicouEmSair;
 
-        public delegate void SolicitacaoListaProdutos(ref List<Produto> listadeprodutos);
+        // public delegate void SolicitacaoListaProdutos(ref List<Produto> listadeprodutos);
+        public delegate List<Produto> SolicitacaoListaProdutos();
         public event SolicitacaoListaProdutos PrecisoDeProdutos;
 
-        public delegate string GravarProdutos();
+        public delegate Resultado GravarProdutos();
         public event GravarProdutos UtilizadorClicouEmGravar;
 
         //public delegate string ExportarProdutoPDF(Produto produto);
         //public event ExportarProdutoPDF ClicouEmPDF;
 
-        // Evento emitido pela View
+        // Eventos emitidos pela View
         public event Action<Produto> ClicouEmPDF;
-        public event Action<Produto, string, string> ClicouEmPdfFoto;
+        //public event Action<Produto, string, string> ClicouEmPDFComImagem;
+
+        // public delegate string ExportarComImagem(Produto produto, string par1, string par2);
+        // public event ExportarComImagem ClicouEmPDFComImagem;
+
+        public delegate string ExportarComFoto(Produto produto, string par1, string par2);
+        public event ExportarComFoto ClicouEmPDFComFoto;
+
+        public void CliqueEmPDFComFoto(Produto produto)
+        {
+            // Emite o evento com o Produto como argumento
+            var mensagem = ClicouEmPDFComFoto(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
+            janela.MostraMensagem(mensagem);
+        }
+
+        public void CliqueEmPDF(Produto produto)
+        {
+            // Emite o evento com o Produto como argumento
+            ClicouEmPDF?.Invoke(produto);
+        }
 
         internal Visao(Modelo m)
         {
@@ -56,18 +74,13 @@ namespace Equipa24_Eventos_Delegados.View
             janela.ShowDialog();
         }
 
-
-        public void CliqueEmPDF(Produto produto)
+        public void CliqueEmGravar()
         {
-            // Emite o evento com o Produto como argumento
-            ClicouEmPDF?.Invoke(produto);
+            //var result = new Resultado("Gravar", "Ficheiro gravado com sucesso!", true);
+            var result = UtilizadorClicouEmGravar();
+            janela.MostraMensagem(result.Mensagem);
         }
 
-        public void CliqueEmPdfFoto(Produto produto)
-        {
-            // Emite o evento com o Produto e 2 strings como argumento
-            ClicouEmPdfFoto?.Invoke(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
-        }
 
         public void MostrarMensagem(string mensagem)
         {
@@ -80,13 +93,6 @@ namespace Equipa24_Eventos_Delegados.View
             UtilizadorClicouEmSair(this, e);
         }
 
-        public string CliqueEmGravar()
-        {
-
-            return UtilizadorClicouEmGravar();
-            //return true;
-
-        }
 
         public void Encerrar()
         {
@@ -105,7 +111,7 @@ namespace Equipa24_Eventos_Delegados.View
                 janela.LimpaCampos();
             }
             UtilizadorClicouImportar(origem, e);
-            if (listaProdutos != null && listaProdutos != null)
+            if (listaProdutos != null)
             {
                 CarregarComboSeleciona(ref comboBox);
                 PesquisarUltimoProduto(ref produto);
@@ -149,7 +155,7 @@ namespace Equipa24_Eventos_Delegados.View
         {
             // Atualizar a lista de produtos recebidas do Model     
             if (PrecisoDeProdutos != null)
-                PrecisoDeProdutos(ref listaProdutos);
+                listaProdutos = PrecisoDeProdutos();
         }
 
         // Obtém o último produto importado

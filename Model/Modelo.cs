@@ -2,6 +2,8 @@
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
 using Equipa24_Eventos_Delegados.View;
+using FolhetosPDF;
+using FolhetosPDF.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,6 +15,7 @@ namespace Equipa24_Eventos_Delegados.Model
     {
         private Visao visao;
         private List<Produto> produtos;
+        private List<Produto> listadeprodutos; // Lista de produtos que será fornecida à Visão
         private DataTable dtProdutos = new DataTable();
 
 
@@ -25,13 +28,19 @@ namespace Equipa24_Eventos_Delegados.Model
             produtos = new List<Produto>();
         }
 
+        public string ExportarParaPDFComFoto(Produto produto, string par1, string par2)
+        {
+            IPdf exportarPDF = new ExportarPDF(produto, par1, par2);
+            return exportarPDF.ExportarFoto();
+        }
+
         public void Importar(string ficheiro)
         {
 
             // Importar Ficheiro
             // Alterar a lista de produtos
-            ProdutosDT.Colunas(ref dtProdutos);
-            ProdutosDT.ObterProdutos(ref dtProdutos, ficheiro);
+            dtProdutos = ProdutosDT.Colunas();
+            dtProdutos = ProdutosDT.ObterProdutos(ficheiro);
 
             produtos.Clear();
             foreach (DataRow dr in dtProdutos.Rows)
@@ -53,13 +62,13 @@ namespace Equipa24_Eventos_Delegados.Model
         }
 
         // Gravar FicheiroOut
-        public string Gravar()
+        public Resultado Gravar()
         {
-            return ProdutosDT.GravarProdutos(dtProdutos);
-            //return true;
+            var resultado = ProdutosDT.GravarProdutos(dtProdutos);
+            return resultado;
         }
 
-        public void SolicitarListaProdutos(ref List<Produto> listadeprodutos)
+        public List<Produto> SolicitarListaProdutos()
         {
             // Copia a lista "produtos" para "listadeprodutos"
             // usando o estilo de cópia adequado aos dados
@@ -71,8 +80,13 @@ namespace Equipa24_Eventos_Delegados.Model
             // visto serem referências.
 
             listadeprodutos = new List<Produto>();
+            listadeprodutos.Clear();
             foreach (Produto p in produtos)
+            {
                 listadeprodutos.Add(p.Clone());
+            }
+
+            return listadeprodutos;
         }
     }
 }

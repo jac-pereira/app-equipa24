@@ -4,8 +4,8 @@
 using Equipa24_Eventos_Delegados.Model;
 using Equipa24_Eventos_Delegados.View;
 using System;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Equipa24_Eventos_Delegados
 {
@@ -25,19 +25,7 @@ namespace Equipa24_Eventos_Delegados
 
         private void btnGravar_Click(object sender, EventArgs e)
         {
-            string str;
-            str = visao.CliqueEmGravar();
-
-            if (!str.Equals(string.Empty))
-            {
-                // MostraMensagem("Ficheiro gravado com sucesso!");
-                MostraMensagem(str);
-            }
-            else
-            {
-                MostraMensagem("Ficheiro não foi gravado!");
-            }
-
+            visao.CliqueEmGravar();
         }
 
         private void btnImportar_Click(object sender, EventArgs e)
@@ -141,7 +129,7 @@ namespace Equipa24_Eventos_Delegados
         {
             visao.CliqueEmSair(e);
         }
- 
+
         private void cboSeleciona_Leave(object sender, EventArgs e)
         {
             cboSeleciona.Text = "Selecionar";
@@ -153,22 +141,14 @@ namespace Equipa24_Eventos_Delegados
             // MessageBox.Show("Form1_FormClosing");
             return;
         }
-        
+
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             // MessageBox.Show("Form1_FormClosed");
             return;
         }
 
-        private void btnPdf_Click(object sender, EventArgs e)
-        {
-            visao.CliqueEmPDF(produto);
-        }
 
-        private void btnPdfFoto_Click(object sender, EventArgs e)
-        {
-            visao.CliqueEmPdfFoto(produto);
-        }
 
         public void MostraMensagem(string txt)
         {
@@ -181,6 +161,19 @@ namespace Equipa24_Eventos_Delegados
         {
             txtMensagens.Text = string.Empty;
         }
+
+
+        private void btnPdfFoto_Click(object sender, EventArgs e)
+        {
+            visao.CliqueEmPDFComFoto(produto);
+
+        }
+
+        private void btnPdf_Click(object sender, EventArgs e)
+        {
+            visao.CliqueEmPDF(produto);
+        }
+
 
     }
 }
