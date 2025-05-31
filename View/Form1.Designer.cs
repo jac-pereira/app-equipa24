@@ -1,4 +1,4 @@
-﻿namespace Equipa24_Eventos_Delegados
+﻿namespace Equipa24_FolhetosPDF
 {
     partial class Form1
     {
@@ -54,6 +54,7 @@
             this.btnImportar = new System.Windows.Forms.Button();
             this.cboSeleciona = new System.Windows.Forms.ComboBox();
             this.btnPdfFoto = new System.Windows.Forms.Button();
+            this.btnPdfImagem = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFoto)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxEquipa24)).BeginInit();
             this.SuspendLayout();
@@ -115,7 +116,7 @@
             // btnPdf
             // 
             this.btnPdf.Enabled = false;
-            this.btnPdf.Location = new System.Drawing.Point(262, 495);
+            this.btnPdf.Location = new System.Drawing.Point(212, 495);
             this.btnPdf.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPdf.Name = "btnPdf";
             this.btnPdf.Size = new System.Drawing.Size(68, 35);
@@ -312,7 +313,7 @@
             // btnPdfFoto
             // 
             this.btnPdfFoto.Enabled = false;
-            this.btnPdfFoto.Location = new System.Drawing.Point(338, 495);
+            this.btnPdfFoto.Location = new System.Drawing.Point(288, 495);
             this.btnPdfFoto.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPdfFoto.Name = "btnPdfFoto";
             this.btnPdfFoto.Size = new System.Drawing.Size(102, 35);
@@ -321,11 +322,24 @@
             this.btnPdfFoto.UseVisualStyleBackColor = true;
             this.btnPdfFoto.Click += new System.EventHandler(this.btnPdfFoto_Click);
             // 
+            // btnPdfImagem
+            // 
+            this.btnPdfImagem.Enabled = false;
+            this.btnPdfImagem.Location = new System.Drawing.Point(397, 495);
+            this.btnPdfImagem.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnPdfImagem.Name = "btnPdfImagem";
+            this.btnPdfImagem.Size = new System.Drawing.Size(136, 35);
+            this.btnPdfImagem.TabIndex = 51;
+            this.btnPdfImagem.Text = "PDF Imagem";
+            this.btnPdfImagem.UseVisualStyleBackColor = true;
+            this.btnPdfImagem.Click += new System.EventHandler(this.btnPdfImagem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(730, 706);
+            this.Controls.Add(this.btnPdfImagem);
             this.Controls.Add(this.btnPdfFoto);
             this.Controls.Add(this.cboSeleciona);
             this.Controls.Add(this.btnImportar);
@@ -353,7 +367,7 @@
             this.Controls.Add(this.pictureBoxEquipa24);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Equipa24 - FolhetosPDF";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxFoto)).EndInit();
@@ -390,5 +404,6 @@
         private System.Windows.Forms.Button btnImportar;
         private System.Windows.Forms.ComboBox cboSeleciona;
         private System.Windows.Forms.Button btnPdfFoto;
+        private System.Windows.Forms.Button btnPdfImagem;
     }
 }

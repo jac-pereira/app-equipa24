@@ -1,6 +1,6 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
-namespace Equipa24_Eventos_Delegados.Model
+namespace Equipa24_FolhetosPDF.Model
 {
 
     // Estrutura dos dados do Produto

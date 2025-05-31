@@ -113,14 +113,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\Controlador.cs" />
+    <Compile Include="Utilitarios_Interfaces\AbrirFicheiro.cs" />
+    <Compile Include="Utilitarios_Interfaces\GravarPdf.cs" />
+    <Compile Include="Utilitarios_Interfaces\IPdfMetodo.cs" />
     <Compile Include="Model\ExportarPDF.cs" />
-    <Compile Include="InterfacePdf.cs" />
+    <Compile Include="Utilitarios_Interfaces\InterfacePdf.cs" />
     <Compile Include="Model\Modelo.cs" />
     <Compile Include="Model\Produto.cs" />
     <Compile Include="Model\ProdutosDT.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resultado.cs" />
+    <Compile Include="Utilitarios_Interfaces\Resultado.cs" />
     <Compile Include="View\Form1.cs">
       <SubType>Form</SubType>
     </Compile>

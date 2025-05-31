@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Equipa24_Eventos_Delegados.Model
+namespace Equipa24_FolhetosPDF.Model
 {
     // Ler ficheiro "csv" para uma "dataTable" 
     public class ProdutosDT
@@ -97,7 +97,6 @@ namespace Equipa24_Eventos_Delegados.Model
             DialogResult resposta = MessageBox.Show("Vai Gravar Ficheiro CSV em disco! \n\n Confirma?", "Gravar em Ficheiro", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (resposta != DialogResult.Yes)
             {
-                // janela.MostraMensagem("Ficheiro não foi gravado!");
                 resultado.Mensagem = "Ficheiro não foi gravado!";
                 resultado.Sucesso = false;
                 return resultado;

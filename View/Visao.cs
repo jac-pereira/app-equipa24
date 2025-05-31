@@ -1,21 +1,18 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
-using Equipa24_Eventos_Delegados.Model;
+using Equipa24_FolhetosPDF.Model;
 using FolhetosPDF;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Equipa24_Eventos_Delegados.View
+namespace Equipa24_FolhetosPDF.View
 {
     internal class Visao
     {
         private Modelo modelo;
         private Form1 janela;
-
-        //private static string uc = Equipa24.Uc;
-        //private static string equipa = Equipa24.Equipa;
 
         private List<Produto> listaProdutos;
 
@@ -33,23 +30,27 @@ namespace Equipa24_Eventos_Delegados.View
         public delegate Resultado GravarProdutos();
         public event GravarProdutos UtilizadorClicouEmGravar;
 
-        //public delegate string ExportarProdutoPDF(Produto produto);
-        //public event ExportarProdutoPDF ClicouEmPDF;
-
         // Eventos emitidos pela View
         public event Action<Produto> ClicouEmPDF;
-        //public event Action<Produto, string, string> ClicouEmPDFComImagem;
-
-        // public delegate string ExportarComImagem(Produto produto, string par1, string par2);
-        // public event ExportarComImagem ClicouEmPDFComImagem;
 
         public delegate string ExportarComFoto(Produto produto, string par1, string par2);
         public event ExportarComFoto ClicouEmPDFComFoto;
 
+        public delegate string ExportarComImagem(Produto produto, string par1, string par2);
+        public event ExportarComImagem ClicouEmPDFComImagem;
+
         public void CliqueEmPDFComFoto(Produto produto)
         {
             // Emite o evento com o Produto como argumento
-            var mensagem = ClicouEmPDFComFoto(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
+            var mensagem = ClicouEmPDFComFoto?.Invoke(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software")
+                            ?? "Nenhum exportador de PDF com foto foi definido.";
+            janela.MostraMensagem(mensagem);
+        }
+        public void CliqueEmPDFComImagem(Produto produto)
+        {
+            // Emite o evento com o Produto como argumento
+            var mensagem = ClicouEmPDFComImagem?.Invoke(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software")
+                            ?? "Nenhum exportador de PDF com foto foi definido.";
             janela.MostraMensagem(mensagem);
         }
 
@@ -87,16 +88,13 @@ namespace Equipa24_Eventos_Delegados.View
             janela.MostraMensagem(mensagem);
         }
 
-
         public void CliqueEmSair(EventArgs e)
         {
             UtilizadorClicouEmSair(this, e);
         }
 
-
         public void Encerrar()
         {
-            // janela.Encerrar();
             Application.Exit();
         }
 
@@ -117,7 +115,6 @@ namespace Equipa24_Eventos_Delegados.View
                 PesquisarUltimoProduto(ref produto);
 
                 janela.AtivarBotoesNavegacao();
-
             }
         }
 
@@ -133,9 +130,10 @@ namespace Equipa24_Eventos_Delegados.View
             }
         }
 
-
-        public void NomeDoFicheiroParaImportar(ref string ficheiro)
+        //public void NomeDoFicheiroParaImportar(ref string ficheiro)
+        public string NomeDoFicheiroParaImportar()
         {
+            string ficheiro = null;
             try
             {
                 OpenFileDialog openFile = new OpenFileDialog { Filter = "CSV Files|*.csv" };
@@ -149,6 +147,7 @@ namespace Equipa24_Eventos_Delegados.View
                 MessageBox.Show(ex.Message);
                 ficheiro = null;
             }
+            return ficheiro;
         }
 
         public void AtualizarListaDeProdutos()

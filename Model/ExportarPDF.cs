@@ -1,20 +1,20 @@
-﻿using Equipa24_Eventos_Delegados;
-using Equipa24_Eventos_Delegados.Model;
+﻿using Equipa24_FolhetosPDF;
+using Equipa24_FolhetosPDF.Model;
+using FolhetosPDF.Utilitarios_Interfaces;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Xml.Linq;
 
 namespace FolhetosPDF.Model
 {
-    internal class ExportarPDF : IPdf
+    internal class ExportarPDF : IPdf, IPdfMetodo
     {
         private StringBuilder sbMsg = new StringBuilder();
-        private static string msg;
-        // local de armazenamento dos PDF
-        private static string pastaPDF = Equipa24.PastaPDF;
-        private static string caminho = string.Empty;
+        private string msg;
 
         // propriedades
         public Produto Artigo { get; set; }
@@ -22,6 +22,10 @@ namespace FolhetosPDF.Model
         public string Empresa { get; set; }
 
         // construtores
+        public ExportarPDF()
+        {
+
+        }
         public ExportarPDF(Produto artigo)
         {
             Artigo = artigo;
@@ -57,18 +61,50 @@ namespace FolhetosPDF.Model
                 gfx.DrawString("Texto complementar: " + Artigo.TextoComplementar, font, XBrushes.Black, new XPoint(40, y += 20));
                 gfx.DrawString("Observações: " + Artigo.Obs, font, XBrushes.Black, new XPoint(40, y += 20));
 
-                msg = GravarPdf(document, "");
+                string nome = "Folheto do Produto - " + Artigo.Id;
+                GravarPdf gravarPdf = new GravarPdf(document, nome, "");
+                gravarPdf.Gravar();
+                msg = gravarPdf.Mensagem;
                 document.Close();
-                return msg;
+
+                if (gravarPdf.Sucesso)
+                {
+                    AbrirFicheiro abrirFicheiro = new AbrirFicheiro(gravarPdf.Caminho);
+                    abrirFicheiro.Abrir();
+                    msg += abrirFicheiro.MensagemSucessoOuErro;
+                }
             }
+            
+            return msg;
         }
+
+
+
 
 
         // Gera ficheiro PDF com FOTO e texto centralizado.
         // Inclui as 2 "string" do construtor com 3 parâmetros.
         public string ExportarFoto()
         {
-            //StringBuilder sb = new StringBuilder();
+            msg = PdfComImagem(20, 20);
+            return msg;
+        }
+
+
+        // Gera ficheiro PDF com  texto centralizado e Imagem abaixo do texto.
+        // A informação a ser exportada é do Produto e inclui as 2 "string", todos passados em parâmetros.
+        public string ExportarComImagem(Produto artigo, string grupoTrabalho, string empresa)
+        {
+            this.Artigo = artigo;
+            this.GrupoTrabalho = grupoTrabalho;
+            this.Empresa = empresa;
+            msg = PdfComImagem(270, 250);
+            return msg;
+        }
+
+        private string PdfComImagem(int px, int py)
+        {
+
             sbMsg.Clear();
 
             // Cria um novo documento PDF
@@ -111,69 +147,36 @@ namespace FolhetosPDF.Model
                 try
                 {
                     XImage imagem = XImage.FromFile(Artigo.Foto);
-                    graphics.DrawImage(imagem, 20, 20, 100, 100);
+                    graphics.DrawImage(imagem, px, py, 100, 100);
                     sbMsg.AppendLine("Gerado documento \"PDF\"!");
                 }
-                catch
+                catch (Exception ex)
                 {
                     sbMsg.AppendLine("Gerado documento \"PDF\" sem imagem!");
+                    sbMsg.AppendLine("Erro: " + ex.Message);
                 }
-
-            }
-            catch
-            {
-                doc.Close();
-                return ("Erro ao gerar \"PDF\"");
-            }
-
-            msg = GravarPdf(doc, sbMsg.ToString());
-            doc.Close();
-            return msg;
-        }
-
-        // Grava o ficheiro PDF e inicia processo para abrir o PDF
-        private string GravarPdf(PdfDocument doc, string msg)
-        {
-            caminho = pastaPDF + "produto_" + Artigo.Id + ".pdf";
-            sbMsg.Clear();
-            sbMsg.Append(msg);
-
-            try
-            {
-                // Guarda o ficheiro
-                doc.Save(caminho);
-                sbMsg.Append("Ficheiro \"PDF\" gravado com sucesso!");
-            }
-            catch
-            {
-                // MessageBox.Show("Erro no ficheiro de escrita " + caminho + "\n\n\t Não foi gerado ficheiro 'pdf'");
-                sbMsg.Append("Erro no ficheiro de escrita ");
-                sbMsg.AppendLine(caminho);
-                sbMsg.Append("Não foi gravado ficheiro \"PDF\"");
-                return sbMsg.ToString();
-            }
-
-
-            // Abre automaticamente o PDF (opcional)
-            try
-            {
-                Process.Start("explorer", caminho);
-                sbMsg.Append(" A visualizar o ficheiro \"PDF\"");
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("Erro no ficheiro de leitura " + caminho + "\n\n" + ex.ToString());
-                sbMsg.AppendLine();
-                sbMsg.AppendLine(ex.ToString());
-                sbMsg.AppendLine();
-                sbMsg.AppendLine("A visualizar o ficheiro \"PDF\"");
-                sbMsg.AppendLine("Erro no ficheiro de leitura ");
-                sbMsg.Append(caminho);
+                doc.Close();
+                return ("Erro ao gerar \"PDF\"" + "\n" + ex.Message);
             }
 
-            return sbMsg.ToString();
+            string nome = "Folheto do Produto - " + Artigo.Id;
+            GravarPdf gravarPdf = new GravarPdf(doc, nome, sbMsg.ToString());
+            gravarPdf.Gravar();
+            msg = gravarPdf.Mensagem;
+            doc.Close();
+
+            if (gravarPdf.Sucesso)
+            {
+                AbrirFicheiro abrirFicheiro = new AbrirFicheiro(gravarPdf.Caminho);
+                abrirFicheiro.Abrir();
+                msg += abrirFicheiro.MensagemSucessoOuErro;
+            }
+            return msg;
         }
     }
-}
+} // fim do namespace Equipa24_FolhetosPDF.Model
 
 

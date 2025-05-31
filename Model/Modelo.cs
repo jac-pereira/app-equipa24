@@ -1,7 +1,7 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
-using Equipa24_Eventos_Delegados.View;
+using Equipa24_FolhetosPDF.View;
 using FolhetosPDF;
 using FolhetosPDF.Model;
 using System;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 
 
-namespace Equipa24_Eventos_Delegados.Model
+namespace Equipa24_FolhetosPDF.Model
 {
     class Modelo
     {
@@ -17,7 +17,6 @@ namespace Equipa24_Eventos_Delegados.Model
         private List<Produto> produtos;
         private List<Produto> listadeprodutos; // Lista de produtos que será fornecida à Visão
         private DataTable dtProdutos = new DataTable();
-
 
         public delegate void NotificarListaDeProdutosAlterada();
         public event NotificarListaDeProdutosAlterada ListaDeProdutosAlterada;
@@ -33,6 +32,14 @@ namespace Equipa24_Eventos_Delegados.Model
             IPdf exportarPDF = new ExportarPDF(produto, par1, par2);
             return exportarPDF.ExportarFoto();
         }
+
+        public string ExportarParaPDFComImagem(Produto produto, string par1, string par2)
+        //public string ExportarParaPDFComFoto(Produto produto, string par1, string par2)
+        {
+            IPdfMetodo exportarPDF = new ExportarPDF();
+            return exportarPDF.ExportarComImagem(produto, par1, par2);
+        }
+
 
         public void Importar(string ficheiro)
         {
@@ -55,10 +62,8 @@ namespace Equipa24_Eventos_Delegados.Model
 
                 produtos.Add(p);
             }
-
             // Notifica a que as listas foram alteradas.
             ListaDeProdutosAlterada();
-
         }
 
         // Gravar FicheiroOut

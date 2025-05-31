@@ -1,13 +1,13 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
-using Equipa24_Eventos_Delegados.Model;
-using Equipa24_Eventos_Delegados.View;
+using Equipa24_FolhetosPDF.Model;
+using Equipa24_FolhetosPDF.View;
 using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Equipa24_Eventos_Delegados
+namespace Equipa24_FolhetosPDF
 {
     internal partial class Form1 : Form
     {
@@ -30,7 +30,6 @@ namespace Equipa24_Eventos_Delegados
 
         private void btnImportar_Click(object sender, EventArgs e)
         {
-
             produto = null;
             visao.CliqueEmImportar(sender, e, ref produto, ref cboSeleciona);
 
@@ -55,7 +54,7 @@ namespace Equipa24_Eventos_Delegados
             MostrarProduto();
         }
 
-        public void MostrarProduto()
+        private void MostrarProduto()
         {
             txtID.Text = Convert.ToString(produto.Id);
             txtProduto.Text = produto.CodProduto.ToString();
@@ -63,42 +62,33 @@ namespace Equipa24_Eventos_Delegados
             txtTextoComplementar.Text = produto.TextoComplementar.ToString();
             txtObs.Text = produto.Obs.ToString();
 
-
             // tratamento de exceção
             // pictureBoxFoto.ImageLocation = pasta + "F" + txtID.Text + ".png";
+            bool erro = true;
             try
             {
-
                 pictureBoxFoto.ImageLocation = produto.Foto;
                 pictureBoxFoto.Load();
+                erro = false;
             }
             catch (FileNotFoundException)
             {
                 MessageBox.Show("Erro no ficheiro da Foto\n Não foi enconttrado o ficheiro da imagem\n Comunique o problema\n Pode continuar sem visualizar a imagem");
-                pictureBoxFoto.ImageLocation = string.Empty;
             }
             catch (ArgumentException)
             {
                 MessageBox.Show("Erro no ficheiro da Foto\n Não é um ficheiro de imagem válido\n Comunique o problema\n Pode continuar sem visualizar a imagem");
-                pictureBoxFoto.ImageLocation = string.Empty;
             }
-
             catch (Exception)
             {
                 MessageBox.Show("Erro no ficheiro da Foto\n Comunique o problema\n Pode continuar sem visualizar a imagem");
-                pictureBoxFoto.ImageLocation = string.Empty;
             }
-
-
-        }
-
-        public void LimpaCampos()
-        {
-            txtID.Text = string.Empty;
-            txtProduto.Text = string.Empty;
-            txtDescricao.Text = string.Empty;
-            txtTextoComplementar.Text = string.Empty;
-            txtObs.Text = string.Empty;
+            finally
+            {
+                if (erro)
+                    pictureBoxFoto.ImageLocation = string.Empty;
+                pictureBoxFoto.Refresh();
+            }
         }
 
         private void cboSeleciona_SelectedIndexChanged(object sender, EventArgs e)
@@ -114,15 +104,6 @@ namespace Equipa24_Eventos_Delegados
             cboSeleciona.Text = "Selecionar";
             cboSeleciona.Refresh();
 
-        }
-
-        public void AtivarBotoesNavegacao()
-        {
-            btnAnterior.Enabled = true;
-            btnProximo.Enabled = true;
-            btnGravar.Enabled = true;
-            btnPdf.Enabled = true;
-            btnPdfFoto.Enabled = true;
         }
 
         private void btnSair_Click(object sender, EventArgs e)
@@ -148,6 +129,11 @@ namespace Equipa24_Eventos_Delegados
             return;
         }
 
+        private void txtMensagens_Leave(object sender, EventArgs e)
+        {
+            txtMensagens.Text = string.Empty;
+        }
+
 
 
         public void MostraMensagem(string txt)
@@ -157,23 +143,47 @@ namespace Equipa24_Eventos_Delegados
             txtMensagens.AppendText("  ");
 
         }
-        private void txtMensagens_Leave(object sender, EventArgs e)
+        public void LimpaCampos()
         {
-            txtMensagens.Text = string.Empty;
+            txtID.Text = string.Empty;
+            txtProduto.Text = string.Empty;
+            txtDescricao.Text = string.Empty;
+            txtTextoComplementar.Text = string.Empty;
+            txtObs.Text = string.Empty;
+        }
+        public void AtivarBotoesNavegacao()
+        {
+            btnAnterior.Enabled = true;
+            btnProximo.Enabled = true;
+            btnGravar.Enabled = true;
+            btnPdf.Enabled = true;
+            btnPdfFoto.Enabled = true;
+            btnPdfImagem.Enabled = true;
         }
 
-
-        private void btnPdfFoto_Click(object sender, EventArgs e)
-        {
-            visao.CliqueEmPDFComFoto(produto);
-
-        }
 
         private void btnPdf_Click(object sender, EventArgs e)
         {
-            visao.CliqueEmPDF(produto);
+            if (produto != null)
+                visao.CliqueEmPDF(produto);
+            else
+                MostraMensagem("Produto não definido.");
         }
 
+        private void btnPdfFoto_Click(object sender, EventArgs e)
+        {
+            if (produto != null)
+                visao.CliqueEmPDFComFoto(produto);
+            else
+                MostraMensagem("Produto não definido.");
+        }
 
+        private void btnPdfImagem_Click(object sender, EventArgs e)
+        {
+            if (produto != null)
+                visao.CliqueEmPDFComImagem(produto);
+            else
+                MostraMensagem("Produto não definido.");
+        }
     }
 }
