@@ -13,7 +13,7 @@ namespace FolhetosPDF.Model
 {
     internal class ExportarPDF : IPdf, IPdfMetodo
     {
-        private StringBuilder sbMsg = new StringBuilder();
+        //private StringBuilder sbMsg = new StringBuilder();
         private string msg;
 
         // propriedades
@@ -36,7 +36,6 @@ namespace FolhetosPDF.Model
             GrupoTrabalho = grupoTrabalho;
             Empresa = empresa;
         }
-
 
         // Gera ficheiro PDF sem FOTO e texto alinhado à esquerda. 
         // É utilizado o construtor com 1 parâmetro.
@@ -61,26 +60,10 @@ namespace FolhetosPDF.Model
                 gfx.DrawString("Texto complementar: " + Artigo.TextoComplementar, font, XBrushes.Black, new XPoint(40, y += 20));
                 gfx.DrawString("Observações: " + Artigo.Obs, font, XBrushes.Black, new XPoint(40, y += 20));
 
-                string nome = "Folheto do Produto - " + Artigo.Id;
-                GravarPdf gravarPdf = new GravarPdf(document, nome, "");
-                gravarPdf.Gravar();
-                msg = gravarPdf.Mensagem;
-                document.Close();
-
-                if (gravarPdf.Sucesso)
-                {
-                    AbrirFicheiro abrirFicheiro = new AbrirFicheiro(gravarPdf.Caminho);
-                    abrirFicheiro.Abrir();
-                    msg += abrirFicheiro.MensagemSucessoOuErro;
-                }
+                return FinalizarExportacao(document, "Folheto do Produto - " + Artigo.Id);
             }
-            
-            return msg;
+
         }
-
-
-
-
 
         // Gera ficheiro PDF com FOTO e texto centralizado.
         // Inclui as 2 "string" do construtor com 3 parâmetros.
@@ -90,22 +73,20 @@ namespace FolhetosPDF.Model
             return msg;
         }
 
-
         // Gera ficheiro PDF com  texto centralizado e Imagem abaixo do texto.
         // A informação a ser exportada é do Produto e inclui as 2 "string", todos passados em parâmetros.
         public string ExportarComImagem(Produto artigo, string grupoTrabalho, string empresa)
         {
-            this.Artigo = artigo;
-            this.GrupoTrabalho = grupoTrabalho;
-            this.Empresa = empresa;
+            Artigo = artigo;
+            GrupoTrabalho = grupoTrabalho;
+            Empresa = empresa;
             msg = PdfComImagem(270, 250);
             return msg;
         }
 
         private string PdfComImagem(int px, int py)
         {
-
-            sbMsg.Clear();
+            msg = string.Empty;
 
             // Cria um novo documento PDF
             using var doc = new PdfDocument();
@@ -124,11 +105,10 @@ namespace FolhetosPDF.Model
             var tipoFont3 = new XFont("Arial", 8);
 
             var textFormatter = new PdfSharp.Drawing.Layout.XTextFormatter(graphics);
+            textFormatter.Alignment = PdfSharp.Drawing.Layout.XParagraphAlignment.Center;
 
             try
             {
-                textFormatter.Alignment = PdfSharp.Drawing.Layout.XParagraphAlignment.Center;
-
                 // Escreve cabeçalho
                 textFormatter.DrawString(GrupoTrabalho, tipoFont2, XBrushes.Blue, new XRect(20, 25, page.Width.Point, page.Height.Point));
                 textFormatter.DrawString(Artigo.ToString(), tipoFont, XBrushes.Red, new XRect(20, 50, page.Width.Point, page.Height.Point));
@@ -148,35 +128,36 @@ namespace FolhetosPDF.Model
                 {
                     XImage imagem = XImage.FromFile(Artigo.Foto);
                     graphics.DrawImage(imagem, px, py, 100, 100);
-                    sbMsg.AppendLine("Gerado documento \"PDF\"!");
+                    msg += "Gerado documento \"PDF\"!";
                 }
                 catch (Exception ex)
                 {
-                    sbMsg.AppendLine("Gerado documento \"PDF\" sem imagem!");
-                    sbMsg.AppendLine("Erro: " + ex.Message);
+                    msg += "Gerado documento \"PDF\" sem imagem!";
+                    msg += Environment.NewLine + "Erro: " + ex.Message + Environment.NewLine;
                 }
             }
             catch (Exception ex)
             {
                 doc.Close();
-                return ("Erro ao gerar \"PDF\"" + "\n" + ex.Message);
+                return ("Erro ao gerar \"PDF\"" + Environment.NewLine + ex.Message);
             }
+            return FinalizarExportacao(doc, "Folheto do Produto - " + Artigo.Id);
+        }
 
-            string nome = "Folheto do Produto - " + Artigo.Id;
-            GravarPdf gravarPdf = new GravarPdf(doc, nome, sbMsg.ToString());
+        private string FinalizarExportacao(PdfDocument doc, string nomeFicheiro)
+        {
+            var gravarPdf = new GravarPdf(doc, nomeFicheiro, "A gerar ficheiro PDF: ");
             gravarPdf.Gravar();
-            msg = gravarPdf.Mensagem;
-            doc.Close();
-
+            msg += gravarPdf.Mensagem;
             if (gravarPdf.Sucesso)
             {
-                AbrirFicheiro abrirFicheiro = new AbrirFicheiro(gravarPdf.Caminho);
-                abrirFicheiro.Abrir();
-                msg += abrirFicheiro.MensagemSucessoOuErro;
+                AbrirFicheiro abrirFicheiro = new AbrirFicheiro();
+                msg += abrirFicheiro.Abrir(gravarPdf.Caminho);
             }
+            doc.Close();
             return msg;
         }
     }
-} // fim do namespace Equipa24_FolhetosPDF.Model
+}
 
 

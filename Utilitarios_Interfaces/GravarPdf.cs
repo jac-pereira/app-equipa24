@@ -3,59 +3,55 @@ using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FolhetosPDF.Utilitarios_Interfaces
 {
-    internal class GravarPdf
+    internal class GravarPdf : IGravarPdf
     {
+        private readonly PdfDocument documento;
+        private readonly string nome;
+        private readonly string pastaDestino = Equipa24.PastaPDF;
+        private readonly string mensagem;
         private StringBuilder sbMsg = new StringBuilder();
 
         // Propriedades
-        public PdfDocument Documento { get; set; }
-        public string Nome { get; set; }
-        public string Caminho { get; set; }
-        public string Mensagem { get; set; }
-        public bool Sucesso { get; set; }
+        public string Mensagem { get; private set; }
+        public bool Sucesso { get; private set; }
+        public string Caminho { get; private set; }
 
-        public GravarPdf(PdfDocument documento, string nome, string mensagem)
+        public GravarPdf(PdfDocument documento, string nome, string mensagemInicial = "")
         {
-            Documento = documento;
-            Nome = nome;
-            Mensagem = mensagem;
-            Sucesso = false;
+            this.documento = documento ?? throw new ArgumentNullException(nameof(documento));
+            this.nome = string.IsNullOrWhiteSpace(nome) ? "Documento" : nome;
+            this.mensagem = mensagemInicial;
             Caminho = string.Empty;
+            Mensagem = string.Empty;
+            Sucesso = false;
         }
 
         // Grava o ficheiro PDF e inicia processo para abrir o PDF
         public void Gravar()
         {
-            sbMsg.Clear();
-            sbMsg.Append(Mensagem);
-            Caminho = Equipa24.PastaPDF + Nome + ".pdf";
+            Mensagem += mensagem;
+            Caminho = Path.Combine(pastaDestino, nome + ".pdf");
 
             try
             {
                 // Guarda o ficheiro
-                Documento.Save(Caminho);
-                sbMsg.Append("Ficheiro \"PDF\" gravado com sucesso!");
+                documento.Save(Caminho);
+                Mensagem += Caminho + Environment.NewLine + "Ficheiro \"PDF\" gravado com sucesso! ";
                 Sucesso = true;
             }
             catch (Exception ex)
             {
-                // MessageBox.Show("Erro no ficheiro de escrita " + caminho + "\n\n\t Não foi gerado ficheiro 'pdf'");
-                sbMsg.Append("Erro no ficheiro de escrita ");
-                sbMsg.AppendLine(Caminho);
-                sbMsg.Append("Não foi gravado ficheiro \"PDF\"");
-                sbMsg.AppendLine();
-                sbMsg.AppendLine("Erro: " + ex.Message);
-                // return sbMsg.ToString();
+                Mensagem += "Erro no ficheiro de escrita. " + Environment.NewLine + "Não foi gravado ficheiro \"PDF\".";
+                Mensagem += Environment.NewLine + "Erro: " + ex.Message;
                 Sucesso = false;
             }
-            Mensagem = sbMsg.ToString();
-
         }
     }
 }

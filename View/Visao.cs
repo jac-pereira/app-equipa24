@@ -100,8 +100,6 @@ namespace Equipa24_FolhetosPDF.View
 
         public void CliqueEmImportar(object origem, EventArgs e, ref Produto produto, ref ComboBox comboBox)
         {
-            // utilizar aqui tratamento de erros
-            //Ver comentários em Form1.cs: btnImportar_Click
             if (listaProdutos != null)
             {
                 comboBox.Items.Clear();
@@ -120,7 +118,6 @@ namespace Equipa24_FolhetosPDF.View
 
         public void CarregarComboSeleciona(ref ComboBox comboBox)
         {
-            // int auxInt = 0;
             string aux;
             comboBox.Items.Clear();
             foreach (Produto p in listaProdutos)
@@ -207,6 +204,5 @@ namespace Equipa24_FolhetosPDF.View
             }
             return listaProdutos[indiceAtual];
         }
-
     }
 }

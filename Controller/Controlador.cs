@@ -18,7 +18,6 @@ namespace Equipa24_FolhetosPDF.Controller
         public delegate void AtivacaoInterface(object origem);
         //public event AtivacaoInterface AtivarInterface;
 
-
         public Controlador()
         {
             modelo = new Modelo(visao);
@@ -32,16 +31,23 @@ namespace Equipa24_FolhetosPDF.Controller
             visao.UtilizadorClicouImportar += UtilizadorClicouImportar;
 
             // Subscreve o evento da View
-            visao.ClicouEmPDF += ExportarParaPDF;
-            visao.ClicouEmPDFComFoto += modelo.ExportarParaPDFComFoto;
+            visao.ClicouEmPDF += AoClicarEmPDF;
+            visao.ClicouEmPDFComFoto += AoClicarEmPDFComFoto;
             visao.ClicouEmPDFComImagem += modelo.ExportarParaPDFComImagem;
         }
 
-        private void ExportarParaPDF(Produto produto)
+        private void AoClicarEmPDF(Produto produto)
         {
-            ExportarPDF exportarPDF = new ExportarPDF(produto);
-            visao.MostrarMensagem(exportarPDF.Exportar());
+            var exportarPDF = new ExportarPDF(produto);
+            var mensagem = exportarPDF.Exportar();
+            visao.MostrarMensagem(mensagem);
         }
+
+        private string AoClicarEmPDFComFoto(Produto produto, string grupo, string empresa)
+        {
+            return modelo.ExportarParaPDFComFoto(produto, grupo, empresa);
+        }
+
 
         public void IniciarPrograma()
         {
@@ -62,7 +68,5 @@ namespace Equipa24_FolhetosPDF.Controller
                 modelo.Importar(ficheiro);
             }
         }
-
-
     }
 }

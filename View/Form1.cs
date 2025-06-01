@@ -119,13 +119,11 @@ namespace Equipa24_FolhetosPDF
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // MessageBox.Show("Form1_FormClosing");
             return;
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            // MessageBox.Show("Form1_FormClosed");
             return;
         }
 
@@ -134,14 +132,11 @@ namespace Equipa24_FolhetosPDF
             txtMensagens.Text = string.Empty;
         }
 
-
-
         public void MostraMensagem(string txt)
         {
             txtMensagens.Text += txt;
             txtMensagens.Focus();
             txtMensagens.AppendText("  ");
-
         }
         public void LimpaCampos()
         {
@@ -151,6 +146,7 @@ namespace Equipa24_FolhetosPDF
             txtTextoComplementar.Text = string.Empty;
             txtObs.Text = string.Empty;
         }
+
         public void AtivarBotoesNavegacao()
         {
             btnAnterior.Enabled = true;
@@ -160,7 +156,6 @@ namespace Equipa24_FolhetosPDF
             btnPdfFoto.Enabled = true;
             btnPdfImagem.Enabled = true;
         }
-
 
         private void btnPdf_Click(object sender, EventArgs e)
         {

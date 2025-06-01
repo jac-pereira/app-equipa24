@@ -34,12 +34,10 @@ namespace Equipa24_FolhetosPDF.Model
         }
 
         public string ExportarParaPDFComImagem(Produto produto, string par1, string par2)
-        //public string ExportarParaPDFComFoto(Produto produto, string par1, string par2)
         {
             IPdfMetodo exportarPDF = new ExportarPDF();
             return exportarPDF.ExportarComImagem(produto, par1, par2);
         }
-
 
         public void Importar(string ficheiro)
         {
@@ -75,15 +73,6 @@ namespace Equipa24_FolhetosPDF.Model
 
         public List<Produto> SolicitarListaProdutos()
         {
-            // Copia a lista "produtos" para "listadeprodutos"
-            // usando o estilo de cópia adequado aos dados
-            // (provavelmente deep copy e não shallow copy).
-            // não deveria simplesmente fazer:
-            // listadeprodutos=produtos;
-            // porque isso permitira que quem manipulasse os produtos
-            // da lista fornecida alterasse as do próprio Model
-            // visto serem referências.
-
             listadeprodutos = new List<Produto>();
             listadeprodutos.Clear();
             foreach (Produto p in produtos)

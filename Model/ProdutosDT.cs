@@ -78,7 +78,6 @@ namespace Equipa24_FolhetosPDF.Model
                     }
                 }
                 sr.Close();
-
             }
             catch (Exception ex)
             {
@@ -86,7 +85,6 @@ namespace Equipa24_FolhetosPDF.Model
             }
             return dt;
         }
-
 
         public static Resultado GravarProdutos(DataTable dt)
         {
@@ -127,8 +125,6 @@ namespace Equipa24_FolhetosPDF.Model
                 StringBuilder sb = new StringBuilder();
                 sb.Clear();
                 sb.AppendLine("Ficheiro não foi gravado!");
-                // sb.Append("Erro a gravar ficheiro: ");
-                // sb.AppendLine(ficheiroOut);
                 sb.Append(ex.Message);
                 resultado.Mensagem = sb.ToString();
                 resultado.Sucesso = false;

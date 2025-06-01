@@ -15,6 +15,6 @@
         {
             return $"{Nome}: {Mensagem} (Sucesso: {Sucesso})";
         }
-
+        // Mensagem += Environment.NewLine + "Erro: " + ex.Message;
     }
 }
