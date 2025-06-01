@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Equipa24_FolhetosPDF.Model
+namespace FolhetosPDF.Model
 {
     // Ler ficheiro "csv" para uma "dataTable" 
     public class ProdutosDT

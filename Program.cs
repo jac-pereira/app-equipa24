@@ -1,11 +1,11 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
-using Equipa24_FolhetosPDF.Controller;
+using FolhetosPDF.Controller;
 using System;
 using System.Windows.Forms;
 
-namespace Equipa24_FolhetosPDF
+namespace FolhetosPDF
 {
 
     static class Equipa24

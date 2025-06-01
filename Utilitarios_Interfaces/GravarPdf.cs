@@ -1,12 +1,8 @@
-﻿using Equipa24_FolhetosPDF;
+﻿using FolhetosPDF;
 using PdfSharp.Pdf;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FolhetosPDF.Utilitarios_Interfaces
 {

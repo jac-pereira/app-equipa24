@@ -1,4 +1,4 @@
-﻿namespace FolhetosPDF
+﻿namespace FolhetosPDF.Utilitarios_Interfaces
 {
     internal interface IPdf
     {

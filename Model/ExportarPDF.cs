@@ -1,13 +1,8 @@
-﻿using Equipa24_FolhetosPDF;
-using Equipa24_FolhetosPDF.Model;
+﻿using FolhetosPDF.Model;
 using FolhetosPDF.Utilitarios_Interfaces;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Xml.Linq;
 
 namespace FolhetosPDF.Model
 {

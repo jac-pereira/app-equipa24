@@ -1,6 +1,6 @@
-﻿using Equipa24_FolhetosPDF.Model;
+﻿using FolhetosPDF.Model;
 
-namespace FolhetosPDF
+namespace FolhetosPDF.Utilitarios_Interfaces
 {
     internal interface IPdfMetodo
     {

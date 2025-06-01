@@ -1,5 +1,5 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
-namespace Equipa24_FolhetosPDF.Model
+namespace FolhetosPDF.Model
 {
     // Estrutura dos dados do Produto
     public class Produto

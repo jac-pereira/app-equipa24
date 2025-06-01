@@ -1,4 +1,4 @@
-﻿namespace Equipa24_FolhetosPDF
+﻿namespace FolhetosPDF
 {
     partial class Form1
     {

@@ -1,7 +1,7 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
-using Equipa24_FolhetosPDF.View;
+using FolhetosPDF.View;
 using FolhetosPDF;
 using FolhetosPDF.Model;
 using System;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 
 
-namespace Equipa24_FolhetosPDF.Model
+namespace FolhetosPDF.Model
 {
     class Modelo
     {

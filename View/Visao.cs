@@ -1,13 +1,13 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
-using Equipa24_FolhetosPDF.Model;
+using FolhetosPDF.Model;
 using FolhetosPDF;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Equipa24_FolhetosPDF.View
+namespace FolhetosPDF.View
 {
     internal class Visao
     {
