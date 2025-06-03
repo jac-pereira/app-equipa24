@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using FolhetosPDF;
+using FolhetosPDF.Utilitarios_Interfaces;
+using System;
 using System.Data;
+using System.IO;
+using System.Text;
+using System.Windows.Forms;
 
-namespace Equipa24_Eventos_Delegados.Model
+namespace FolhetosPDF.Model
 {
     // Ler ficheiro "csv" para uma "dataTable" 
     public class ProdutosDT
@@ -21,9 +20,12 @@ namespace Equipa24_Eventos_Delegados.Model
         // Para forçar o número de foto igual ao autoincremento
         private const int incrementSeed = 1;
 
+        // Alterado para ser estático
+        private static DataTable dt = new DataTable();
+
         // Colunas (DataTable dtProdutos) 
         // utilizar passagem por referência
-        public static void Colunas(ref DataTable dt)
+        public static DataTable Colunas()
         {
             dt.Clear();
             dt.Columns.Clear();
@@ -38,11 +40,11 @@ namespace Equipa24_Eventos_Delegados.Model
             dt.Columns.Add("obs", typeof(string));
             dt.Columns.Add("foto", typeof(string));
 
-
+            return dt;
         }
 
         // Ler Ficheiro 
-        public static void ObterProdutos(ref DataTable dt, string ficheiro)
+        public static DataTable ObterProdutos(string ficheiro)
         {
             try
             {
@@ -61,61 +63,74 @@ namespace Equipa24_Eventos_Delegados.Model
                     i++;
                     foto = pastaImagens + "F" + i + ".png";
 
-
-                    // Adicionar à tabela
-                    // para utilizar o incremento automático ...Add(null, ...) 
-                    // o valor da variável i tem de corresponder ao valor de incremento automático
-                    dt.Rows.Add(null, col[1], col[2], col[3], col[4], foto);
+                    try
+                    {
+                        // Adicionar à tabela
+                        // para utilizar o incremento automático ...Add(null, ...) 
+                        // o valor da variável i tem de corresponder ao valor de incremento automático
+                        dt.Rows.Add(null, col[1], col[2], col[3], col[4], foto);
+                    }
+                    catch (Exception ex)
+                    {
+                        // MessageBox.Show(ex.Message);
+                        MessageBox.Show(ex.Message + "\n\n" + " Erro ao ler a linha " + i + "\n Número de colunas inferior ao necessário!\n ----------\n " + linha, "Adicionar Linha", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        // MessageBox.Show(" Erro ao ler a linha " + i + "\n Número de colunas inferior ao necessário!\n ----------\n " + linha , "Adicionar Linha", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        i--;
+                    }
                 }
                 sr.Close();
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
+            return dt;
         }
 
-
-        public static string GravarProdutos(DataTable dt)
+        public static Resultado GravarProdutos(DataTable dt)
         {
             string pastaCSV = Equipa24.PastaCSV;
             string ficheiroOut = pastaCSV + "FicheiroOut.csv";
+            Resultado resultado = new Resultado("Gravar", "Ficheiro gravado com sucesso!", true);
 
             DialogResult resposta = MessageBox.Show("Vai Gravar Ficheiro CSV em disco! \n\n Confirma?", "Gravar em Ficheiro", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (resposta != DialogResult.Yes)
             {
-                return string.Empty;
+                resultado.Mensagem = "Ficheiro não foi gravado!";
+                resultado.Sucesso = false;
+                return resultado;
             }
             try
             {
-                using (var sw = new StreamWriter(ficheiroOut, false))
-                {
-                    string linha = "";
-                    // Grava a primeira linha - cabeçalho
-                    sw.WriteLine("ID"+ cSplit + "Produto" + cSplit + "Descricao" + cSplit + "TextoComplementar" + cSplit + "Obs");
+                using var sw = new StreamWriter(ficheiroOut, false);
+                string linha = "";
+                // Grava a primeira linha - cabeçalho
+                sw.WriteLine("ID" + cSplit + "Produto" + cSplit + "Descricao" + cSplit + "TextoComplementar" + cSplit + "Obs");
 
-                    // Gravar as restantes linhas
-                    foreach (DataRow row in dt.Rows)
+                // Gravar as restantes linhas
+                foreach (DataRow row in dt.Rows)
+                {
+                    linha = Convert.ToString(row[0]);
+                    for (int i = 1; i < dt.Columns.Count; i++)
                     {
-                        linha = Convert.ToString(row[0]);
-                        for (int i = 1; i < dt.Columns.Count; i++)
-                        {
-                            linha += cSplit + Convert.ToString(row[i]);
-                        }
-                        sw.WriteLine(linha);
+                        linha += cSplit + Convert.ToString(row[i]);
                     }
-                    sw.Close();
+                    sw.WriteLine(linha);
                 }
-                return "\nFoi gravado o ficheiro: " + ficheiroOut ; 
+                sw.Close();
+                resultado.Mensagem = "Foi gravado o ficheiro: " + ficheiroOut;
+                resultado.Sucesso = true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-                MessageBox.Show("\nError a gravar ficheiro: " + ficheiroOut + "\n", "Gravação do Fciheiro \"csv\"", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return string.Empty;
+                StringBuilder sb = new StringBuilder();
+                sb.Clear();
+                sb.AppendLine("Ficheiro não foi gravado!");
+                sb.Append(ex.Message);
+                resultado.Mensagem = sb.ToString();
+                resultado.Sucesso = false;
             }
+            return resultado;
         }
     }
 }

@@ -1,18 +1,11 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
-
-using Equipa24_Eventos_Delegados.Model;
-using Equipa24_Eventos_Delegados.View;
+using FolhetosPDF.Utilitarios_Interfaces;
+using FolhetosPDF.Model;
+using FolhetosPDF.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace Equipa24_Eventos_Delegados.Controller
+namespace FolhetosPDF.Controller
 {
     class Controlador
     {
@@ -23,22 +16,46 @@ namespace Equipa24_Eventos_Delegados.Controller
         public delegate void AtivacaoInterface(object origem);
         //public event AtivacaoInterface AtivarInterface;
 
-
         public Controlador()
         {
-            //sair = false;
-            visao = new Visao(modelo);
             modelo = new Modelo(visao);
+            visao = new Visao(modelo);
 
+            visao.UtilizadorClicouEmGravar += modelo.Gravar;
+            visao.PrecisoDeProdutos += modelo.SolicitarListaProdutos;
             modelo.ListaDeProdutosAlterada += visao.AtualizarListaDeProdutos;
-            
+
             visao.UtilizadorClicouEmSair += UtilizadorClicouEmSair;
             visao.UtilizadorClicouImportar += UtilizadorClicouImportar;
-            visao.PrecisoDeProdutos += modelo.SolicitarListaProdutos;
 
-
-            visao.UtilizadorClicouEmGravar += modelo.Gravar; 
+            // Subscreve o evento da View
+            visao.ClicouEmPDF += AoClicarEmPDF;
+            visao.ClicouEmPDFComFoto += AoClicarEmPDFComFoto;
+            visao.ClicouEmPDFComImagem += AoClicarEmPDFComImagem;
+            //visao.ClicouEmPDFComImagem += modelo.ExportarParaPDFComImagem;
         }
+
+        private void AoClicarEmPDF(Produto produto)
+        {
+            // Interface IPdf - Construtor com 1 parâmetro
+            var exportarPDF = new ExportarPDF(produto);
+            var resultado = exportarPDF.Exportar();
+
+            visao.AbrirPdf(resultado);
+        }
+
+        private Resultado AoClicarEmPDFComFoto(Produto produto, string grupo, string empresa)
+        {
+            // Interface IPdf - Construtor com 3 parâmetros
+            return modelo.ExportarParaPDFComFoto(produto, grupo, empresa); 
+        }
+
+        private Resultado AoClicarEmPDFComImagem(Produto produto, string grupo, string empresa)
+        {
+            // Interface IPdfMetodo - Método com 3 parâmetros
+            return modelo.ExportarParaPDFComImagem(produto, grupo, empresa);
+        }
+
 
         public void IniciarPrograma()
         {
@@ -47,22 +64,17 @@ namespace Equipa24_Eventos_Delegados.Controller
 
         private void UtilizadorClicouEmSair(object sender, EventArgs e)
         {
-            //sair = true;
             visao.Encerrar();
         }
 
         public void UtilizadorClicouImportar(object fonte, System.EventArgs args)
         {
-            //Implementar....
             string ficheiro = null;
-            visao.NomeDoFicheiroParaImportar(ref ficheiro);
+            ficheiro = visao.NomeDoFicheiroParaImportar();
             if (ficheiro != null)
             {
                 modelo.Importar(ficheiro);
-
             }
         }
-
-
     }
 }
