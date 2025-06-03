@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using FolhetosPDF.Utilitarios_Interfaces;
 
 namespace FolhetosPDF.Model
 {

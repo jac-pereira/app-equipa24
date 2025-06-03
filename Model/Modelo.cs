@@ -4,6 +4,8 @@
 using FolhetosPDF.View;
 using FolhetosPDF;
 using FolhetosPDF.Model;
+using FolhetosPDF.Utilitarios_Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Data;

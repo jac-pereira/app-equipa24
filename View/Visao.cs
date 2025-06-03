@@ -3,6 +3,7 @@
 
 using FolhetosPDF.Model;
 using FolhetosPDF;
+using FolhetosPDF.Utilitarios_Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
