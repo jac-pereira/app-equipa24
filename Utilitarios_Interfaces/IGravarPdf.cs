@@ -2,7 +2,7 @@
 {
     internal interface IGravarPdf
     {
-        void Gravar();
+        Resultado Gravar();
         string Mensagem { get; }
         bool Sucesso { get; }
         string Caminho { get; }

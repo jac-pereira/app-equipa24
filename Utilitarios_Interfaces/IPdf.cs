@@ -2,7 +2,7 @@
 {
     internal interface IPdf
     {
-        string Exportar();
-        string ExportarFoto();
+        Resultado Exportar();
+        Resultado ExportarFoto();
     }
 }

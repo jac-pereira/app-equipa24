@@ -1,9 +1,8 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
-
+using FolhetosPDF.Utilitarios_Interfaces;
 using FolhetosPDF.Model;
 using FolhetosPDF.View;
-using FolhetosPDF.Model;
 using System;
 
 namespace FolhetosPDF.Controller
@@ -32,19 +31,29 @@ namespace FolhetosPDF.Controller
             // Subscreve o evento da View
             visao.ClicouEmPDF += AoClicarEmPDF;
             visao.ClicouEmPDFComFoto += AoClicarEmPDFComFoto;
-            visao.ClicouEmPDFComImagem += modelo.ExportarParaPDFComImagem;
+            visao.ClicouEmPDFComImagem += AoClicarEmPDFComImagem;
+            //visao.ClicouEmPDFComImagem += modelo.ExportarParaPDFComImagem;
         }
 
         private void AoClicarEmPDF(Produto produto)
         {
+            // Interface IPdf - Construtor com 1 parâmetro
             var exportarPDF = new ExportarPDF(produto);
-            var mensagem = exportarPDF.Exportar();
-            visao.MostrarMensagem(mensagem);
+            var resultado = exportarPDF.Exportar();
+
+            visao.AbrirPdf(resultado);
         }
 
-        private string AoClicarEmPDFComFoto(Produto produto, string grupo, string empresa)
+        private Resultado AoClicarEmPDFComFoto(Produto produto, string grupo, string empresa)
         {
-            return modelo.ExportarParaPDFComFoto(produto, grupo, empresa);
+            // Interface IPdf - Construtor com 3 parâmetros
+            return modelo.ExportarParaPDFComFoto(produto, grupo, empresa); 
+        }
+
+        private Resultado AoClicarEmPDFComImagem(Produto produto, string grupo, string empresa)
+        {
+            // Interface IPdfMetodo - Método com 3 parâmetros
+            return modelo.ExportarParaPDFComImagem(produto, grupo, empresa);
         }
 
 

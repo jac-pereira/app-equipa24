@@ -30,11 +30,10 @@ namespace FolhetosPDF.Utilitarios_Interfaces
         }
 
         // Grava o ficheiro PDF e inicia processo para abrir o PDF
-        public void Gravar()
+        public Resultado Gravar()
         {
             Mensagem += mensagem;
             Caminho = Path.Combine(pastaDestino, nome + ".pdf");
-
             try
             {
                 // Guarda o ficheiro
@@ -48,6 +47,7 @@ namespace FolhetosPDF.Utilitarios_Interfaces
                 Mensagem += Environment.NewLine + "Erro: " + ex.Message;
                 Sucesso = false;
             }
+            return new Resultado("Gravar PDF", Mensagem, Sucesso, Caminho);
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿// Seguido o exemplo do código "FormasAleatorias Eventos-Delegados"
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
+using FolhetosPDF.Utilitarios_Interfaces;
 using FolhetosPDF.View;
-using FolhetosPDF;
-using FolhetosPDF.Model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -27,16 +26,19 @@ namespace FolhetosPDF.Model
             produtos = new List<Produto>();
         }
 
-        public string ExportarParaPDFComFoto(Produto produto, string par1, string par2)
+        public Resultado ExportarParaPDFComFoto(Produto produto, string par1, string par2)
         {
-            IPdf exportarPDF = new ExportarPDF(produto, par1, par2);
+            // Interface IPdf - Construtor com 3 parâmetros
+            IPdf exportarPDF = new ExportarPDF(produto, par1, par2); 
             return exportarPDF.ExportarFoto();
         }
 
-        public string ExportarParaPDFComImagem(Produto produto, string par1, string par2)
+        public Resultado ExportarParaPDFComImagem(Produto produto, string par1, string par2)
         {
+            // Interface IPdfMetodo - Método com 3 parâmetros
             IPdfMetodo exportarPDF = new ExportarPDF();
-            return exportarPDF.ExportarComImagem(produto, par1, par2);
+            var resultado = exportarPDF.ExportarComImagem(produto, par1, par2); 
+            return resultado;
         }
 
         public void Importar(string ficheiro)

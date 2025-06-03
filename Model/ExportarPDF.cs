@@ -33,8 +33,8 @@ namespace FolhetosPDF.Model
         }
 
         // Gera ficheiro PDF sem FOTO e texto alinhado à esquerda. 
-        // É utilizado o construtor com 1 parâmetro.
-        public string Exportar()
+        // Implementa a interface IPdf -  Construtor com 1 parâmetro.
+        public Resultado Exportar()
         {
             // Cria um novo documento PDF
             using (PdfDocument document = new PdfDocument())
@@ -55,33 +55,36 @@ namespace FolhetosPDF.Model
                 gfx.DrawString("Texto complementar: " + Artigo.TextoComplementar, font, XBrushes.Black, new XPoint(40, y += 20));
                 gfx.DrawString("Observações: " + Artigo.Obs, font, XBrushes.Black, new XPoint(40, y += 20));
 
-                return FinalizarExportacao(document, "Folheto do Produto - " + Artigo.Id);
+            return FinalizarExportacao(document, "Folheto do Produto - " + Artigo.Id);
             }
 
         }
 
         // Gera ficheiro PDF com FOTO e texto centralizado.
-        // Inclui as 2 "string" do construtor com 3 parâmetros.
-        public string ExportarFoto()
+        // Implementa a interface IPdf - construtor com 3 parâmetro.
+        public Resultado ExportarFoto()
         {
-            msg = PdfComImagem(20, 20);
-            return msg;
+            var resultado = PdfComImagem(20, 20);
+            return resultado;
         }
 
         // Gera ficheiro PDF com  texto centralizado e Imagem abaixo do texto.
         // A informação a ser exportada é do Produto e inclui as 2 "string", todos passados em parâmetros.
-        public string ExportarComImagem(Produto artigo, string grupoTrabalho, string empresa)
+        // Implementa a interface IPdfMetodo. - Método com 3 parâmetros.
+        public Resultado ExportarComImagem(Produto artigo, string grupoTrabalho, string empresa)
         {
             Artigo = artigo;
             GrupoTrabalho = grupoTrabalho;
             Empresa = empresa;
-            msg = PdfComImagem(270, 250);
-            return msg;
+            var resultado = PdfComImagem(270, 250);
+            return resultado;
         }
 
-        private string PdfComImagem(int px, int py)
+        private Resultado PdfComImagem(int px, int py)
         {
-            msg = string.Empty;
+            Resultado resultado = new Resultado("Exportar PDF", string.Empty, false, string.Empty);
+
+            resultado.Mensagem = string.Empty;
 
             // Cria um novo documento PDF
             using var doc = new PdfDocument();
@@ -123,34 +126,32 @@ namespace FolhetosPDF.Model
                 {
                     XImage imagem = XImage.FromFile(Artigo.Foto);
                     graphics.DrawImage(imagem, px, py, 100, 100);
-                    msg += "Gerado documento \"PDF\"!";
+                    resultado.Mensagem += "Gerado documento \"PDF\"!";
                 }
                 catch (Exception ex)
                 {
-                    msg += "Gerado documento \"PDF\" sem imagem!";
-                    msg += Environment.NewLine + "Erro: " + ex.Message + Environment.NewLine;
+                    resultado.Mensagem += "Gerado documento \"PDF\" sem imagem!";
+                    resultado.Mensagem += Environment.NewLine + "Erro: " + ex.Message + Environment.NewLine;
                 }
             }
             catch (Exception ex)
             {
                 doc.Close();
-                return ("Erro ao gerar \"PDF\"" + Environment.NewLine + ex.Message);
+                resultado.Mensagem = "Erro ao gerar \"PDF\"!" + Environment.NewLine + ex.Message;
+                // return ("Erro ao gerar \"PDF\"" + Environment.NewLine + ex.Message);
             }
             return FinalizarExportacao(doc, "Folheto do Produto - " + Artigo.Id);
         }
 
-        private string FinalizarExportacao(PdfDocument doc, string nomeFicheiro)
+        private Resultado FinalizarExportacao(PdfDocument doc, string nomeFicheiro)
         {
-            var gravarPdf = new GravarPdf(doc, nomeFicheiro, "A gerar ficheiro PDF: ");
+            var gravarPdf = new GravarPdf(doc, nomeFicheiro, "A gravar o ficheiro PDF: ");
             gravarPdf.Gravar();
             msg += gravarPdf.Mensagem;
-            if (gravarPdf.Sucesso)
-            {
-                AbrirFicheiro abrirFicheiro = new AbrirFicheiro();
-                msg += abrirFicheiro.Abrir(gravarPdf.Caminho);
-            }
+            var resultado = new Resultado("Exportar PDF", msg, gravarPdf.Sucesso, gravarPdf.Caminho);
+
             doc.Close();
-            return msg;
+            return resultado;
         }
     }
 }
