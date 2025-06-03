@@ -3,7 +3,6 @@
 
 using FolhetosPDF.Model;
 using FolhetosPDF.View;
-using FolhetosPDF.Model;
 using System;
 
 namespace FolhetosPDF.Controller
@@ -33,6 +32,9 @@ namespace FolhetosPDF.Controller
             visao.ClicouEmPDF += AoClicarEmPDF;
             visao.ClicouEmPDFComFoto += AoClicarEmPDFComFoto;
             visao.ClicouEmPDFComImagem += modelo.ExportarParaPDFComImagem;
+
+            modelo.ListaDeProdutosAlterada += visao.AtualizarListaDeProdutos;
+
         }
 
         private void AoClicarEmPDF(Produto produto)
