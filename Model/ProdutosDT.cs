@@ -1,4 +1,5 @@
 ﻿using FolhetosPDF;
+using FolhetosPDF.Utilitarios_Interfaces;
 using System;
 using System.Data;
 using System.IO;

@@ -2,7 +2,7 @@
 // da  UC 21179 - Laboratório_de_Desenvolvimento_de_Software
 
 using FolhetosPDF.Model;
-using FolhetosPDF;
+using FolhetosPDF.Utilitarios_Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
