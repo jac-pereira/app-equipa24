@@ -6,9 +6,8 @@ using System;
 
 namespace FolhetosPDF.Model
 {
-    internal class ExportarPDF : IPdf, IPdfMetodo
+    internal class ExportarPDF : IPdf, IPdfMetodo, IPdfFoto
     {
-        //private StringBuilder sbMsg = new StringBuilder();
         private string msg;
 
         // propriedades
@@ -32,11 +31,10 @@ namespace FolhetosPDF.Model
             Empresa = empresa;
         }
 
-        // Gera ficheiro PDF sem FOTO e texto alinhado à esquerda. 
-        // Implementa a interface IPdf -  Construtor com 1 parâmetro.
+        // Implementa a interface IPdf 
+        // Gera ficheiro PDF sem FOTO e texto alinhado à esquerda.
         public Resultado Exportar()
         {
-            // Cria um novo documento PDF
             using (PdfDocument document = new PdfDocument())
             {
                 document.Info.Title = "Produto - Equipa24";
@@ -60,17 +58,17 @@ namespace FolhetosPDF.Model
 
         }
 
-        // Gera ficheiro PDF com FOTO e texto centralizado.
-        // Implementa a interface IPdf - construtor com 3 parâmetro.
+        // Implementa as interfaces IPdf e IPdfFoto 
+        // Gera PDF com FOTO no top esquerdo e texto centralizado.
         public Resultado ExportarFoto()
         {
             var resultado = PdfComImagem(20, 20);
             return resultado;
         }
 
-        // Gera ficheiro PDF com  texto centralizado e Imagem abaixo do texto.
-        // A informação a ser exportada é do Produto e inclui as 2 "string", todos passados em parâmetros.
-        // Implementa a interface IPdfMetodo. - Método com 3 parâmetros.
+
+        // Implementa a interface IPdfMetodo 
+        // Gera PDF com texto centralizado e Imagem centralizada abaixo do texto.
         public Resultado ExportarComImagem(Produto artigo, string grupoTrabalho, string empresa)
         {
             Artigo = artigo;

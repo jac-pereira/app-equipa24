@@ -9,12 +9,10 @@ namespace FolhetosPDF.Controller
 {
     class Controlador
     {
-        //bool sair;
         Modelo modelo;
         Visao visao;
 
         public delegate void AtivacaoInterface(object origem);
-        //public event AtivacaoInterface AtivarInterface;
 
         public Controlador()
         {
@@ -32,7 +30,6 @@ namespace FolhetosPDF.Controller
             visao.ClicouEmPDF += AoClicarEmPDF;
             visao.ClicouEmPDFComFoto += AoClicarEmPDFComFoto;
             visao.ClicouEmPDFComImagem += AoClicarEmPDFComImagem;
-            //visao.ClicouEmPDFComImagem += modelo.ExportarParaPDFComImagem;
         }
 
         private void AoClicarEmPDF(Produto produto)

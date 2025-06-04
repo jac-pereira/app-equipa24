@@ -132,6 +132,7 @@
     <Compile Include="Utilitarios_Interfaces\GravarPdf.cs" />
     <Compile Include="Utilitarios_Interfaces\IAbrirFicheiro.cs" />
     <Compile Include="Utilitarios_Interfaces\IGravarPdf.cs" />
+    <Compile Include="Utilitarios_Interfaces\IPdfFoto.cs" />
     <Compile Include="Utilitarios_Interfaces\IPdfMetodo.cs" />
     <Compile Include="Model\ExportarPDF.cs" />
     <Compile Include="Utilitarios_Interfaces\IPdf.cs" />
