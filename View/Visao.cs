@@ -15,6 +15,53 @@ namespace FolhetosPDF.View
         private Modelo modelo;
         private Form1 janela;
 
+        // Eventos emitidos pela View
+        public event Action<Produto> ClicouEmPDF;
+
+        public delegate Resultado ExportarComFoto(Produto produto, string par1, string par2);
+        public event ExportarComFoto ClicouEmPDFComFoto;
+
+        public delegate Resultado ExportarComImagem(Produto produto, string par1, string par2);
+        public event ExportarComImagem ClicouEmPDFComImagem;
+
+        public void CliqueEmPDFComFoto(Produto produto)
+        {
+            Resultado resultado = new Resultado("Exportar PDF com Foto", "Ficheiro exportado com sucesso!", true);
+            resultado.Mensagem = "Nenhum exportador de PDF com foto foi definido.";
+            // Interface IPdf - Construtor com 3 parâmetros
+            resultado = ClicouEmPDFComFoto?.Invoke(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
+            AbrirPdf(resultado);
+        }
+        public void CliqueEmPDFComImagem(Produto produto)
+        {
+            Resultado resultado = new Resultado("Exportar PDF com Foto", "Ficheiro exportado com sucesso!", true);
+            resultado.Mensagem = "Nenhum exportador de PDF com foto foi definido.";
+            // Interface IPdfMetodo - Método com 3 parâmetros
+            resultado = ClicouEmPDFComImagem?.Invoke(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
+            AbrirPdf(resultado);
+        }
+        public void CliqueEmPDF(Produto produto)
+        {
+            // Emite o evento com o Produto como argumento
+            ClicouEmPDF?.Invoke(produto);
+
+        }
+        public void AbrirPdf(Resultado resultado)
+        {
+            if (resultado.Sucesso)
+            {
+                AbrirFicheiro abrirFicheiro = new AbrirFicheiro();
+                janela.MostraMensagem(abrirFicheiro.Abrir(resultado.Caminho));
+            }
+            else
+            {
+                janela.MostraMensagem(resultado.Mensagem);
+            }
+        }
+
+        // Campos deslocados para aqui para evitar visibilidade ao documentar.
+        // Repor 
+
         private List<Produto> listaProdutos;
 
         // Índice do produto atualmente selecionado na lista
@@ -31,54 +78,8 @@ namespace FolhetosPDF.View
         public delegate Resultado GravarProdutos();
         public event GravarProdutos UtilizadorClicouEmGravar;
 
-        // Eventos emitidos pela View
-        public event Action<Produto> ClicouEmPDF;
 
-        public delegate Resultado ExportarComFoto(Produto produto, string par1, string par2);
-        public event ExportarComFoto ClicouEmPDFComFoto;
-
-        public delegate Resultado ExportarComImagem(Produto produto, string par1, string par2);
-        public event ExportarComImagem ClicouEmPDFComImagem;
-
-        public void CliqueEmPDFComFoto(Produto produto)
-        {
-            Resultado resultado = new Resultado("Exportar PDF com Foto", "Ficheiro exportado com sucesso!", true);
-            resultado.Mensagem = "Nenhum exportador de PDF com foto foi definido.";
-
-            // Interface IPdf - Construtor com 3 parâmetros
-            resultado = ClicouEmPDFComFoto?.Invoke(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
-            AbrirPdf(resultado);
-        }
-        public void CliqueEmPDFComImagem(Produto produto)
-        {
-            Resultado resultado = new Resultado("Exportar PDF com Foto", "Ficheiro exportado com sucesso!", true);
-            resultado.Mensagem = "Nenhum exportador de PDF com foto foi definido.";
-
-            // Interface IPdfMetodo - Método com 3 parâmetros
-            resultado = ClicouEmPDFComImagem?.Invoke(produto, "Equipa - 24", "UC 21179 - Laboratório de Desenvolvimento de Software");
-            AbrirPdf(resultado);
-        }
-
-        public void AbrirPdf(Resultado resultado)
-        {
-            if (resultado.Sucesso)
-            {
-                AbrirFicheiro abrirFicheiro = new AbrirFicheiro();
-                janela.MostraMensagem(abrirFicheiro.Abrir(resultado.Caminho));
-            }
-            else
-            {
-                janela.MostraMensagem(resultado.Mensagem);
-            }
-        }
-
-        public void CliqueEmPDF(Produto produto)
-        {
-            // Emite o evento com o Produto como argumento
-            ClicouEmPDF?.Invoke(produto);
-
-        }
-
+        // Fim dos campos deslocados
 
         internal Visao(Modelo m)
         {
