@@ -94,13 +94,6 @@ namespace FolhetosPDF.Model
             string ficheiroOut = pastaCSV + "FicheiroOut.csv";
             Resultado resultado = new Resultado("Gravar", "Ficheiro gravado com sucesso!", true);
 
-            DialogResult resposta = MessageBox.Show("Vai Gravar Ficheiro CSV em disco! \n\n Confirma?", "Gravar em Ficheiro", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (resposta != DialogResult.Yes)
-            {
-                resultado.Mensagem = "Ficheiro não foi gravado!";
-                resultado.Sucesso = false;
-                return resultado;
-            }
             try
             {
                 // ficheiroOut = "\\timp\\FicheiroOut.csv"; // simular exceção
