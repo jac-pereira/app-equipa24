@@ -12,8 +12,6 @@ namespace FolhetosPDF.Controller
         Modelo modelo;
         Visao visao;
 
-        public delegate void AtivacaoInterface(object origem);
-
         public Controlador()
         {
             modelo = new Modelo(visao);
@@ -44,7 +42,7 @@ namespace FolhetosPDF.Controller
         private Resultado AoClicarEmPDFComFoto(Produto produto, string grupo, string empresa)
         {
             // Interface IPdf - Construtor com 3 parâmetros
-            return modelo.ExportarParaPDFComFoto(produto, grupo, empresa); 
+            return modelo.ExportarParaPDFComFoto(produto, grupo, empresa);
         }
 
         private Resultado AoClicarEmPDFComImagem(Produto produto, string grupo, string empresa)
@@ -70,7 +68,17 @@ namespace FolhetosPDF.Controller
             ficheiro = visao.NomeDoFicheiroParaImportar();
             if (ficheiro != null)
             {
-                modelo.Importar(ficheiro);
+                try
+                {
+                    // Chama o método Importar do modelo para processar o ficheiro
+                    // e atualizar a lista de produtos na visão
+                    modelo.Importar(ficheiro);
+                }
+                catch (Exception ex)
+                {
+                    visao.MostrarMensagem("Erro ao importar ficheiro: " + ficheiro + " " + ex.Message);
+                }
+
             }
         }
     }

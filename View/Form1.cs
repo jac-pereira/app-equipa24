@@ -73,15 +73,23 @@ namespace FolhetosPDF
             }
             catch (FileNotFoundException)
             {
-                MessageBox.Show("Erro no ficheiro da Foto\n Não foi enconttrado o ficheiro da imagem\n Comunique o problema\n Pode continuar sem visualizar a imagem");
+                MostraMensagem("Erro no ficheiro da Foto"+ Environment.NewLine + 
+                    "Não foi encontrado o ficheiro da imagem"+ Environment.NewLine + 
+                    "Comunique o problema"+ Environment.NewLine + 
+                    "Pode continuar sem visualizar a imagem");
             }
             catch (ArgumentException)
             {
-                MessageBox.Show("Erro no ficheiro da Foto\n Não é um ficheiro de imagem válido\n Comunique o problema\n Pode continuar sem visualizar a imagem");
+                MostraMensagem("Erro no ficheiro da Foto"+ Environment.NewLine + 
+                    "Não é um ficheiro de imagem válido"+ Environment.NewLine + 
+                    "Comunique o problema"+ Environment.NewLine + 
+                    "Pode continuar sem visualizar a imagem");
             }
             catch (Exception)
             {
-                MessageBox.Show("Erro no ficheiro da Foto\n Comunique o problema\n Pode continuar sem visualizar a imagem");
+                MostraMensagem("Erro no ficheiro da Foto"+ Environment.NewLine + 
+                    "Comunique o problema"+ Environment.NewLine + 
+                    "Pode continuar sem visualizar a imagem");
             }
             finally
             {
