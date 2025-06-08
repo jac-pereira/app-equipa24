@@ -93,6 +93,12 @@ namespace FolhetosPDF.View
 
         public void CliqueEmGravar()
         {
+            DialogResult resposta = MessageBox.Show("Vai Gravar Ficheiro CSV em disco! \n\n Confirma?", "Gravar em Ficheiro", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (resposta != DialogResult.Yes)
+            {
+                janela.MostraMensagem("Ficheiro não foi gravado!");
+                return;
+            }
             try
             {
                 //var result = new Resultado("Gravar", "Ficheiro gravado com sucesso!", true);
