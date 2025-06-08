@@ -5,6 +5,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.LinkLabel;
 
 namespace FolhetosPDF.Model
 {
@@ -72,9 +73,8 @@ namespace FolhetosPDF.Model
                     }
                     catch (Exception ex)
                     {
-                        // MessageBox.Show(ex.Message);
-                        MessageBox.Show(ex.Message + "\n\n" + " Erro ao ler a linha " + i + "\n Número de colunas inferior ao necessário!\n ----------\n " + linha, "Adicionar Linha", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        // MessageBox.Show(" Erro ao ler a linha " + i + "\n Número de colunas inferior ao necessário!\n ----------\n " + linha , "Adicionar Linha", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        // MessageBox.Show(ex.Message + "\n\n" + " Erro ao ler a linha " + i + "\n Número de colunas inferior ao necessário!\n ----------\n " + linha, "Adicionar Linha", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        throw new Exception(ex.Message + " Erro ao ler a linha " + i + Environment.NewLine + "Número de colunas inferior ao necessário!" + Environment.NewLine + " " + linha);
                         i--;
                     }
                 }
@@ -82,7 +82,8 @@ namespace FolhetosPDF.Model
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                // MessageBox.Show(ex.Message);
+                throw new Exception(ex.Message);
             }
             return dt;
         }
@@ -102,6 +103,7 @@ namespace FolhetosPDF.Model
             }
             try
             {
+                // ficheiroOut = "\\timp\\FicheiroOut.csv"; // simular exceção
                 using var sw = new StreamWriter(ficheiroOut, false);
                 string linha = "";
                 // Grava a primeira linha - cabeçalho
@@ -123,12 +125,13 @@ namespace FolhetosPDF.Model
             }
             catch (Exception ex)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Clear();
-                sb.AppendLine("Ficheiro não foi gravado!");
-                sb.Append(ex.Message);
-                resultado.Mensagem = sb.ToString();
+                resultado.Mensagem = "Ficheiro não foi gravado!";
+                resultado.Mensagem += Environment.NewLine;
+                resultado.Mensagem += ex.Message;
                 resultado.Sucesso = false;
+
+                throw new Exception(resultado.Mensagem);
+
             }
             return resultado;
         }

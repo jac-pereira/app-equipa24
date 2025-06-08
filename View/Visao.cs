@@ -15,7 +15,23 @@ namespace FolhetosPDF.View
         private Modelo modelo;
         private Form1 janela;
 
+        private List<Produto> listaProdutos;
+
+        // Índice do produto atualmente selecionado na lista
+        private int indiceAtual = -1;
+
         // Eventos emitidos pela View
+        // Eventos que serão ligados no Controller
+        public event System.EventHandler UtilizadorClicouImportar;
+        public event System.EventHandler UtilizadorClicouEmSair;
+
+        // public delegate void SolicitacaoListaProdutos(ref List<Produto> listadeprodutos);
+        public delegate List<Produto> SolicitacaoListaProdutos();
+        public event SolicitacaoListaProdutos PrecisoDeProdutos;
+
+        public delegate Resultado GravarProdutos();
+        public event GravarProdutos UtilizadorClicouEmGravar;
+
         public event Action<Produto> ClicouEmPDF;
 
         public delegate Resultado ExportarComFoto(Produto produto, string par1, string par2);
@@ -59,27 +75,6 @@ namespace FolhetosPDF.View
             }
         }
 
-        // Campos deslocados para aqui para evitar visibilidade ao documentar.
-        // Repor 
-
-        private List<Produto> listaProdutos;
-
-        // Índice do produto atualmente selecionado na lista
-        private int indiceAtual = -1;
-
-        // Eventos que serão ligados no Controller
-        public event System.EventHandler UtilizadorClicouImportar;
-        public event System.EventHandler UtilizadorClicouEmSair;
-
-        // public delegate void SolicitacaoListaProdutos(ref List<Produto> listadeprodutos);
-        public delegate List<Produto> SolicitacaoListaProdutos();
-        public event SolicitacaoListaProdutos PrecisoDeProdutos;
-
-        public delegate Resultado GravarProdutos();
-        public event GravarProdutos UtilizadorClicouEmGravar;
-
-
-        // Fim dos campos deslocados
 
         internal Visao(Modelo m)
         {
@@ -98,9 +93,16 @@ namespace FolhetosPDF.View
 
         public void CliqueEmGravar()
         {
-            //var result = new Resultado("Gravar", "Ficheiro gravado com sucesso!", true);
-            var result = UtilizadorClicouEmGravar();
-            janela.MostraMensagem(result.Mensagem);
+            try
+            {
+                //var result = new Resultado("Gravar", "Ficheiro gravado com sucesso!", true);
+                var result = UtilizadorClicouEmGravar();
+                janela.MostraMensagem(result.Mensagem);
+            }
+            catch (Exception ex)
+            {
+                janela.MostraMensagem(ex.Message);
+            }
         }
 
 
@@ -154,6 +156,10 @@ namespace FolhetosPDF.View
             string ficheiro = null;
             try
             {
+                /*
+                                int n = 0;
+                                int x = 1 / n; // Simula uma exceção para testar o tratamento de erros
+                */
                 OpenFileDialog openFile = new OpenFileDialog { Filter = "CSV Files|*.csv" };
                 if (openFile.ShowDialog() == DialogResult.OK)
                 {
@@ -162,7 +168,7 @@ namespace FolhetosPDF.View
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MostrarMensagem("Erro ao selecionar ficheiro para importar: " + ex.Message);
                 ficheiro = null;
             }
             return ficheiro;
